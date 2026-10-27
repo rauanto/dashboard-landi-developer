@@ -1,0 +1,157 @@
+@use 'sass:map';
+
+$colors: (
+  primary: (base: --mat-sys-primary, on: --mat-sys-on-primary),
+  secondary: (base: --mat-sys-secondary, on: --mat-sys-on-secondary),
+  tertiary: (base: --mat-sys-tertiary, on: --mat-sys-on-tertiary),
+  success: (base: --app-success, on: --app-on-success),
+  warning: (base: --app-warning, on: --app-on-warning),
+  info: (base: --app-info, on: --app-on-info),
+  error: (base: --app-error, on: --app-on-error),
+);
+
+:host.app-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.app-stepper__header {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.app-stepper__item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+
+  &:last-child {
+    flex: 0 0 auto;
+  }
+}
+
+.app-stepper__head {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+  border: none;
+  border-radius: 100px;
+  background: transparent;
+  font: inherit;
+  color: var(--mat-sys-on-surface-variant);
+  cursor: pointer;
+  text-align: left;
+
+  &:disabled {
+    cursor: default;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--_c);
+  }
+}
+
+.app-stepper__circle {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background-color: var(--mat-sys-surface-container-highest);
+  color: var(--mat-sys-on-surface-variant);
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+
+  mat-icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 1.125rem;
+  }
+}
+
+.app-stepper__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.app-stepper__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-stepper__optional {
+  font-size: 0.6875rem;
+  opacity: 0.8;
+}
+
+.app-stepper__line {
+  flex: 1;
+  height: 2px;
+  min-width: 1rem;
+  margin: 0 0.25rem;
+  background-color: var(--mat-sys-outline-variant);
+}
+
+.app-stepper__item--active {
+  .app-stepper__circle {
+    background-color: var(--_c);
+    color: var(--_on);
+  }
+  .app-stepper__head {
+    color: var(--mat-sys-on-surface);
+  }
+}
+.app-stepper__item--done {
+  .app-stepper__circle {
+    background-color: color-mix(in srgb, var(--_c) 18%, transparent);
+    color: var(--_c);
+  }
+  .app-stepper__line {
+    background-color: var(--_c);
+  }
+  .app-stepper__head {
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.app-stepper__body {
+  min-height: 4rem;
+}
+
+.app-stepper__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.app-stepper__progress {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+// En pantallas chicas solo el paso activo muestra su texto
+@media (max-width: 600px) {
+  .app-stepper__item:not(.app-stepper__item--active) .app-stepper__text {
+    display: none;
+  }
+}
+
+@each $name, $t in $colors {
+  :host.app-stepper--#{$name} {
+    --_c: var(#{map.get($t, base)});
+    --_on: var(#{map.get($t, on)});
+  }
+}

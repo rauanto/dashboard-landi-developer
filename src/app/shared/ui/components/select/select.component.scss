@@ -1,0 +1,336 @@
+@use 'sass:map';
+
+$select-colors: (
+  primary: (
+    base: --mat-sys-primary,
+    on: --mat-sys-on-primary,
+    container: --mat-sys-primary-container,
+    on-container: --mat-sys-on-primary-container,
+  ),
+  secondary: (
+    base: --mat-sys-secondary,
+    on: --mat-sys-on-secondary,
+    container: --mat-sys-secondary-container,
+    on-container: --mat-sys-on-secondary-container,
+  ),
+  tertiary: (
+    base: --mat-sys-tertiary,
+    on: --mat-sys-on-tertiary,
+    container: --mat-sys-tertiary-container,
+    on-container: --mat-sys-on-tertiary-container,
+  ),
+  success: (
+    base: --app-success,
+    on: --app-on-success,
+    container: --app-success-container,
+    on-container: --app-on-success-container,
+  ),
+  warning: (
+    base: --app-warning,
+    on: --app-on-warning,
+    container: --app-warning-container,
+    on-container: --app-on-warning-container,
+  ),
+  info: (
+    base: --app-info,
+    on: --app-on-info,
+    container: --app-info-container,
+    on-container: --app-on-info-container,
+  ),
+  error: (
+    base: --app-error,
+    on: --app-on-error,
+    container: --app-error-container,
+    on-container: --app-on-error-container,
+  ),
+);
+
+:host.app-select-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.app-select__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border-radius: 100px;
+  padding: 0 1rem;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    border-radius 150ms ease;
+}
+
+:host.app-select--open .app-select__field {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+// ---- Tamaños ----
+:host.app-select--xs .app-select__field {
+  min-height: 1.75rem; /* 28px */
+}
+:host.app-select--sm .app-select__field {
+  min-height: 2.25rem; /* 36px */
+}
+:host.app-select--md .app-select__field {
+  min-height: 2.75rem; /* 44px */
+}
+:host.app-select--lg .app-select__field {
+  min-height: 3.25rem; /* 52px */
+}
+
+// ---- Variantes ----
+:host.app-select--outlined .app-select__field {
+  background-color: transparent;
+  border: 1.5px solid var(--mat-sys-outline-variant);
+}
+
+:host.app-select--filled .app-select__field {
+  background-color: var(--mat-sys-surface-container-high);
+  border: 1.5px solid transparent;
+}
+
+// ---- Control nativo ----
+.app-select__control {
+  order: 2;
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+  padding: 0.75rem 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  .app-select__placeholder {
+    color: var(--mat-sys-on-surface-variant);
+    opacity: 0.7;
+  }
+
+  .app-select__value {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// ---- Dropdown overlay ----
+.app-select__dropdown {
+  background-color: var(--mat-sys-surface-container-high);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 0;
+  z-index: 1000;
+  border: 1.5px solid transparent; // Match field border for visual alignment if needed
+}
+
+// Ensure the dropdown has the correct border if the select is outlined
+:host-context(.app-select--outlined) .app-select__dropdown {
+  border-color: var(--mat-sys-outline-variant);
+  border-top-color: transparent;
+}
+
+.app-select__option {
+  padding: 12px 16px;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background-color: var(--mat-sys-surface-variant);
+  }
+
+  &--selected {
+    background-color: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+    font-weight: 500;
+  }
+}
+
+// ---- Search header y empty state ----
+.app-select__search-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+  background-color: var(--mat-sys-surface-container);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.app-select__search-icon {
+  font-size: 1.125rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.app-select__search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font: inherit;
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface);
+
+  &::placeholder {
+    color: var(--mat-sys-on-surface-variant);
+    opacity: 0.7;
+  }
+}
+
+.app-select__search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--mat-sys-on-surface-variant);
+
+  mat-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &:hover {
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.app-select__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: var(--mat-sys-on-surface-variant);
+  opacity: 0.8;
+
+  mat-icon {
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+// ---- Label flotante (estilo M3) ----
+.app-select__label {
+  order: 1;
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface-variant);
+  pointer-events: none;
+  transition:
+    top 150ms ease,
+    font-size 150ms ease,
+    color 150ms ease;
+  background: transparent;
+
+  &--floating {
+    top: 0;
+    font-size: 0.6875rem;
+    padding: 0 0.25rem;
+    background-color: var(--mat-sys-surface);
+  }
+}
+
+:host.app-select--filled .app-select__label--floating {
+  background-color: var(--mat-sys-surface-container-high);
+}
+
+:host.app-select--has-icon .app-select__label {
+  left: 2.7rem; // 1rem (padding-left) + 1.2rem (icon width) + 0.5rem (gap)
+}
+
+// ---- Iconos y acciones ----
+.app-select__icon {
+  order: 0;
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.app-select__dropdown-icon {
+  order: 3;
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  color: var(--mat-sys-on-surface-variant);
+  pointer-events: none;
+  transition: transform 200ms ease;
+
+  &--open {
+    transform: rotate(180deg);
+  }
+}
+
+// ---- Helper text ----
+.app-select__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+  padding: 0 1rem;
+
+  &--error {
+    color: var(--app-error);
+  }
+}
+
+// ---- Estado disabled ----
+:host.app-select--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+// ---- Estado error ----
+:host.app-select--error .app-select__field {
+  border-color: var(--app-error);
+}
+:host.app-select--error .app-select__label {
+  color: var(--app-error);
+}
+
+// ---- Anillo de foco por color ----
+@each $name, $tokens in $select-colors {
+  :host.app-select--#{$name}.app-select--focused .app-select__field {
+    border-color: var(#{map.get($tokens, base)});
+    box-shadow: 0 0 0 1px var(#{map.get($tokens, base)});
+  }
+
+  :host.app-select--#{$name}.app-select--focused .app-select__label--floating {
+    color: var(#{map.get($tokens, base)});
+  }
+}

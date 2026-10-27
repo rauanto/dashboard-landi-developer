@@ -1,0 +1,93 @@
+@use 'sass:map';
+
+$card-colors: (
+  primary: (
+    container: --mat-sys-primary-container,
+    on-container: --mat-sys-on-primary-container,
+    base: --mat-sys-primary
+  ),
+  secondary: (
+    container: --mat-sys-secondary-container,
+    on-container: --mat-sys-on-secondary-container,
+    base: --mat-sys-secondary
+  ),
+  tertiary: (
+    container: --mat-sys-tertiary-container,
+    on-container: --mat-sys-on-tertiary-container,
+    base: --mat-sys-tertiary
+  ),
+  success: (
+    container: --app-success-container,
+    on-container: --app-on-success-container,
+    base: --app-success
+  ),
+  warning: (
+    container: --app-warning-container,
+    on-container: --app-on-warning-container,
+    base: --app-warning
+  ),
+  info: (
+    container: --app-info-container,
+    on-container: --app-on-info-container,
+    base: --app-info
+  ),
+  error: (
+    container: --app-error-container,
+    on-container: --app-on-error-container,
+    base: --app-error
+  ),
+);
+
+:host.app-card {
+  display: block;
+  border-radius: 1rem;
+  transition: box-shadow 200ms cubic-bezier(0.2, 0, 0, 1), background-color 200ms ease;
+  overflow: hidden;
+}
+
+.app-card__container {
+  padding: 1.25rem;
+  height: 100%;
+}
+
+// ---- Variantes Material 3 ----
+
+// Elevated
+:host.app-card--elevated {
+  background-color: var(--mat-sys-surface-container-low);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  
+
+}
+
+// Filled
+:host.app-card--filled {
+  background-color: var(--mat-sys-surface-container-highest);
+  box-shadow: none;
+
+
+}
+
+// Outlined
+:host.app-card--outlined {
+  background-color: var(--mat-sys-surface);
+  border: 1px solid var(--mat-sys-outline-variant);
+  box-shadow: none;
+
+
+}
+
+// ---- Colores ----
+@each $name, $tokens in $card-colors {
+  :host.app-card--#{$name}.app-card--elevated,
+  :host.app-card--#{$name}.app-card--filled {
+    background-color: var(#{map.get($tokens, container)});
+    color: var(#{map.get($tokens, on-container)});
+  }
+  
+  :host.app-card--#{$name}.app-card--outlined {
+    border-color: var(#{map.get($tokens, base)});
+    background-color: transparent; // usually outlined stays transparent or surface
+    color: var(#{map.get($tokens, on-container)});
+  }
+}

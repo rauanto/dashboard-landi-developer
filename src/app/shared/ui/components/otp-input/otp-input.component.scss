@@ -1,0 +1,177 @@
+@use 'sass:map';
+
+$otp-colors: (
+  primary: (
+    base: --mat-sys-primary,
+    on: --mat-sys-on-primary,
+    container: --mat-sys-primary-container,
+    on-container: --mat-sys-on-primary-container,
+  ),
+  secondary: (
+    base: --mat-sys-secondary,
+    on: --mat-sys-on-secondary,
+    container: --mat-sys-secondary-container,
+    on-container: --mat-sys-on-secondary-container,
+  ),
+  tertiary: (
+    base: --mat-sys-tertiary,
+    on: --mat-sys-on-tertiary,
+    container: --mat-sys-tertiary-container,
+    on-container: --mat-sys-on-tertiary-container,
+  ),
+  success: (
+    base: --app-success,
+    on: --app-on-success,
+    container: --app-success-container,
+    on-container: --app-on-success-container,
+  ),
+  warning: (
+    base: --app-warning,
+    on: --app-on-warning,
+    container: --app-warning-container,
+    on-container: --app-on-warning-container,
+  ),
+  info: (
+    base: --app-info,
+    on: --app-on-info,
+    container: --app-info-container,
+    on-container: --app-on-info-container,
+  ),
+  error: (
+    base: --app-error,
+    on: --app-on-error,
+    container: --app-error-container,
+    on-container: --app-on-error-container,
+  ),
+);
+
+:host.app-otp-input-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-family: inherit;
+}
+
+.app-otp-input__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface);
+}
+
+.app-otp-input__field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.app-otp-input__cell {
+  text-align: center;
+  font: inherit;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+  outline: none;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+  box-sizing: border-box;
+
+  &:focus {
+    transform: translateY(-2px);
+  }
+
+  &--filled {
+    font-weight: 700;
+  }
+}
+
+.app-otp-input__divider {
+  font-size: 1.25rem;
+  font-weight: 300;
+  color: var(--mat-sys-outline);
+  user-select: none;
+  padding: 0 0.125rem;
+}
+
+// ---- Tamaños ----
+:host.app-otp-input--xs {
+  .app-otp-input__cell {
+    width: 2rem;
+    height: 2.25rem;
+    font-size: 0.875rem;
+    border-radius: 8px;
+  }
+}
+
+:host.app-otp-input--sm {
+  .app-otp-input__cell {
+    width: 2.25rem;
+    height: 2.625rem;
+    font-size: 1rem;
+    border-radius: 10px;
+  }
+}
+
+:host.app-otp-input--md {
+  .app-otp-input__cell {
+    width: 2.75rem;
+    height: 3.25rem;
+    font-size: 1.25rem;
+    border-radius: 14px;
+  }
+}
+
+:host.app-otp-input--lg {
+  .app-otp-input__cell {
+    width: 3.25rem;
+    height: 3.75rem;
+    font-size: 1.5rem;
+    border-radius: 16px;
+  }
+}
+
+// ---- Variantes ----
+:host.app-otp-input--outlined .app-otp-input__cell {
+  background-color: transparent;
+  border: 1.5px solid var(--mat-sys-outline-variant);
+
+  &.app-otp-input__cell--filled {
+    border-color: var(--mat-sys-outline);
+  }
+}
+
+:host.app-otp-input--filled .app-otp-input__cell {
+  background-color: var(--mat-sys-surface-container-high);
+  border: 1.5px solid transparent;
+}
+
+// ---- Helper text ----
+.app-otp-input__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  &--error {
+    color: var(--app-error);
+  }
+}
+
+// ---- Estado disabled ----
+:host.app-otp-input--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+// ---- Estado error ----
+:host.app-otp-input--error .app-otp-input__cell {
+  border-color: var(--app-error) !important;
+}
+
+// ---- Focus por color ----
+@each $name, $tokens in $otp-colors {
+  :host.app-otp-input--#{$name} .app-otp-input__cell:focus {
+    border-color: var(#{map.get($tokens, base)});
+    box-shadow: 0 0 0 1px var(#{map.get($tokens, base)});
+  }
+}

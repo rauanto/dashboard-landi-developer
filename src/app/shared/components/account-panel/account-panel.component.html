@@ -1,0 +1,42 @@
+<div class="account-panel">
+  <button type="button" class="account-panel__close" mat-icon-button mat-dialog-close aria-label="Cerrar">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div class="account-panel__header">
+    <span class="account-panel__email">{{ user.email }}</span>
+  </div>
+
+  <app-avatar class="account-panel__avatar" [label]="user.email" size="xl" />
+
+  <h2 class="account-panel__greeting">¡Hola, {{ displayName }}!</h2>
+
+  <div class="account-panel__badges">
+    @if (user.isVerified) {
+      <app-badge color="success" variant="tonal" icon="verified">Cuenta verificada</app-badge>
+    } @else {
+      <app-badge color="warning" variant="tonal" icon="error_outline">Correo sin verificar</app-badge>
+    }
+
+    @if (user.isSuperuser) {
+      <app-badge color="tertiary" variant="tonal" icon="shield_person">Administrador</app-badge>
+    }
+  </div>
+
+  <mat-divider class="account-panel__divider" />
+
+  <button
+    appButton
+    type="button"
+    variant="tonal"
+    color="error"
+    size="lg"
+    icon="logout"
+    class="account-panel__logout"
+    [loading]="loggingOut()"
+    [disabled]="loggingOut()"
+    (click)="logout()"
+  >
+    Cerrar sesión
+  </button>
+</div>

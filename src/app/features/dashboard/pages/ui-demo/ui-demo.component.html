@@ -1,0 +1,479 @@
+<header class="demo-header">
+  <div class="demo-header__top">
+    <div>
+      <h1>UI Kit · Demo</h1>
+      <p>Todos los componentes con sus variantes, tamaños, colores y estados.</p>
+    </div>
+    <app-button-toggle [formControl]="mode" [options]="toggleModes" size="sm" />
+  </div>
+  <nav class="demo-nav">
+    @for (s of [
+      ['botones', 'Botones'], ['badges', 'Badges y avatar'], ['inputs', 'Inputs'], ['selects', 'Selects'],
+      ['otro', 'OTP y archivos'], ['seleccion', 'Selección'], ['fechas', 'Fechas y números'],
+      ['extras', 'Chips y firma'], ['feedback', 'Feedback y cards'], ['formfield', 'Form field'], ['wizard', 'Formulario completo']
+    ]; track s[0]) {
+      <a [href]="'#' + s[0]">{{ s[1] }}</a>
+    }
+  </nav>
+</header>
+
+<main class="demo-main">
+  <!-- ============ BOTONES ============ -->
+  <section id="botones" class="demo-section">
+    <h2>Botones</h2>
+    <h3>Variante × color</h3>
+    <div class="demo-matrix">
+      @for (v of buttonVariants; track v) {
+        <div class="demo-row">
+          <span class="demo-row__label">{{ v }}</span>
+          @for (c of colors; track c) {
+            <button appButton [variant]="v" [color]="c">{{ c }}</button>
+          }
+        </div>
+      }
+    </div>
+    <h3>Tamaños, iconos y estados</h3>
+    <div class="demo-row">
+      @for (s of sizes3; track s) {
+        <button appButton variant="filled" [size]="s">{{ s }}</button>
+      }
+      <button appButton variant="filled" icon="save">Con ícono</button>
+      <button appButton variant="tonal" icon="arrow_forward" iconPosition="end">Ícono al final</button>
+      <button appButton variant="outlined" [loading]="loadingBtn()" (click)="fakeLoad()">Cargar</button>
+      <button appButton variant="filled" [disabled]="true">Deshabilitado</button>
+    </div>
+  </section>
+
+  <!-- ============ BADGES / AVATAR ============ -->
+  <section id="badges" class="demo-section">
+    <h2>Badges y avatar</h2>
+    @for (v of badgeVariants; track v) {
+      <div class="demo-row">
+        <span class="demo-row__label">{{ v }}</span>
+        @for (c of badgeColors; track c) {
+          <app-badge [variant]="v" [color]="c">{{ c }}</app-badge>
+        }
+      </div>
+    }
+    <div class="demo-row">
+      <span class="demo-row__label">tamaños</span>
+      @for (s of sizes; track s) {
+        <app-badge color="info" [size]="s" icon="info">{{ s }}</app-badge>
+      }
+      <app-badge color="success" [dot]="true" />
+      <app-badge color="error" [dot]="true" />
+      <app-badge color="warning" [dismissible]="true">Descartable</app-badge>
+    </div>
+    <div class="demo-row">
+      <span class="demo-row__label">avatar</span>
+      @for (s of ['sm', 'md', 'lg', 'xl']; track s) {
+        <app-avatar label="Raúl Cruz" [size]="$any(s)" />
+      }
+      @for (c of ['primary', 'secondary', 'tertiary', 'neutral']; track c) {
+        <app-avatar label="Ana López" [color]="$any(c)" />
+      }
+    </div>
+  </section>
+
+  <!-- ============ INPUTS ============ -->
+  <section id="inputs" class="demo-section">
+    <h2>Input</h2>
+    <h3>Variantes × tamaños</h3>
+    <div class="demo-grid">
+      @for (v of variants; track v) {
+        @for (s of sizes; track s) {
+          <app-input [label]="v + ' · ' + s" [variant]="v" [size]="s" />
+        }
+      }
+    </div>
+    <h3>Color del foco (haz click en cada uno)</h3>
+    <div class="demo-grid">
+      @for (c of colors; track c) {
+        <app-input [label]="c" [color]="c" />
+      }
+    </div>
+    <h3>Tipos, íconos y acciones</h3>
+    <div class="demo-grid">
+      <app-input label="Correo" type="email" prefixIcon="mail" hint="Usa tu correo corporativo" size="xs" />
+      <app-input label="Contraseña" type="password" prefixIcon="lock" />
+      <app-input label="Buscar" type="search" prefixIcon="search" [clearable]="true" />
+      <app-input label="Con placeholder" placeholder="Escribe algo…" />
+      <app-input label="Con valor limpiable" [clearable]="true" [formControl]="demoCtrl.texto" />
+      <app-input label="Prefijo / sufijo" prefixText="https://" suffixText=".com" />
+      <app-input label="Deshabilitado" [disabled]="true" />
+      <app-input label="Con error manual" errorMessage="Este valor ya existe" />
+      <app-input label="Requerido (toca y sal)" [required]="true" />
+    </div>
+    <h3>Formatos</h3>
+    <div class="demo-grid">
+      <app-input label="Teléfono" format="phone" prefixIcon="phone" hint="(555) 123-4567" />
+      <app-input label="Monto" format="currency" hint="Formato moneda" />
+      <app-input label="Solo dígitos" format="digits" />
+      <app-input label="Número exacto (10)" format="digits" [exactLength]="10" />
+    </div>
+    <h3>Contadores y longitudes</h3>
+    <div class="demo-grid">
+      <app-input label="Máx. 20 caracteres" [maxLength]="20" />
+      <app-input label="Mínimo 8" [minLength]="8" />
+      <app-input label="Exactamente 13 (RFC)" [exactLength]="13" />
+      <app-input label="Mínimo 3 palabras" [minWords]="3" />
+      <app-input label="Exactamente 2 palabras" [exactWords]="2" />
+      <app-input label="Máx. 5 palabras" [maxWords]="5" />
+    </div>
+    <h3>Multilínea</h3>
+    <div class="demo-grid">
+      <app-input label="Comentarios" [multiline]="true" [rows]="3" [maxLength]="200" />
+      <app-input label="Descripción (filled)" variant="filled" [multiline]="true" [rows]="3" [minWords]="5" />
+    </div>
+  </section>
+
+  <!-- ============ SELECTS ============ -->
+  <section id="selects" class="demo-section">
+    <h2>Selects</h2>
+    <h3>app-select · variantes × tamaños</h3>
+    <div class="demo-grid">
+      @for (v of variants; track v) {
+        @for (s of sizes; track s) {
+          <app-select [label]="v + ' · ' + s" [variant]="v" [size]="s" [options]="estados" />
+        }
+      }
+    </div>
+    <h3>Colores, ícono, buscador, estados</h3>
+    <div class="demo-grid">
+      @for (c of colors; track c) {
+        <app-select [label]="c" [color]="c" [options]="estados" />
+      }
+      <app-select label="Con ícono" prefixIcon="map" [options]="estados" />
+      <app-select label="Con buscador" [searchable]="true" [options]="estados" />
+      <app-select label="Con valor" [formControl]="demoCtrl.select" [options]="estados" hint="Valor inicial: Tabasco" />
+      <app-select label="Deshabilitado" [formControl]="demoCtrl.disabledSelect" [options]="estados" />
+      <app-select label="Requerido (abre y cierra)" [required]="true" [options]="estados" />
+      <app-select label="Con error" errorMessage="Selecciona un estado válido" [options]="estados" />
+    </div>
+    <h3>Searchable, multi-select y autocomplete</h3>
+    <div class="demo-grid">
+      <app-searchable-select label="Searchable" [formControl]="demoCtrl.searchable" [options]="estados" [clearable]="true" prefixIcon="search" />
+      <app-searchable-select label="Searchable (filled)" variant="filled" [options]="estados" />
+      <app-multi-select label="Multi-select" [formControl]="demoCtrl.multi" [options]="estados" />
+      <app-multi-select label="Multi (sin seleccionar todo)" variant="filled" [showSelectAll]="false" [maxDisplayedChips]="1" [options]="estados" />
+      <app-autocomplete label="Autocomplete (catálogo)" [formControl]="demoCtrl.auto" [options]="estados" hint="Debe existir en el catálogo" />
+      <app-autocomplete label="Autocomplete (texto libre)" [freeText]="true" [options]="estados" />
+    </div>
+  </section>
+
+  <!-- ============ OTP / ARCHIVOS ============ -->
+  <section id="otro" class="demo-section">
+    <h2>OTP y carga de archivos</h2>
+    <div class="demo-grid">
+      <app-otp-input label="Código de 6 dígitos" [formControl]="demoCtrl.otp" hint="Prueba pegar un código" />
+      <app-otp-input label="PIN de 4 (oculto)" [length]="4" [masked]="true" variant="filled" />
+      <app-otp-input label="Con error" errorMessage="Código incorrecto" />
+    </div>
+    <h3>app-file-upload</h3>
+    <div class="demo-grid">
+      <app-file-upload variant="dropzone" label="Dropzone" category="documents" [multiple]="true" [maxFiles]="3" hint="PDF, Word o Excel · máx. 10 MB" />
+      <app-file-upload variant="compact" label="Compacto" />
+      <app-file-upload variant="button" label="Botón" buttonText="Adjuntar comprobante" />
+      <app-file-upload variant="image" label="Foto (rectángulo)" category="images" />
+      <app-file-upload variant="image" shape="circle" label="Avatar (círculo)" category="images" />
+    </div>
+  </section>
+
+  <!-- ============ SELECCIÓN ============ -->
+  <section id="seleccion" class="demo-section">
+    <h2>Checkbox, radio, toggle y button-toggle</h2>
+    <h3>Checkbox</h3>
+    <div class="demo-row">
+      @for (c of colors; track c) {
+        <app-checkbox [color]="c" [formControl]="demoCtrl.checkbox">{{ c }}</app-checkbox>
+      }
+    </div>
+    <div class="demo-row">
+      @for (s of sizes3; track s) {
+        <app-checkbox [size]="s">{{ s }}</app-checkbox>
+      }
+      <app-checkbox [indeterminate]="true">Indeterminado</app-checkbox>
+      <app-checkbox [disabled]="true">Deshabilitado</app-checkbox>
+      <app-checkbox [required]="true" hint="Debe marcarse">Requerido (toca y sal)</app-checkbox>
+      <app-checkbox errorMessage="Con error manual">Error</app-checkbox>
+    </div>
+    <h3>Checkbox group</h3>
+    <div class="demo-grid">
+      <app-checkbox-group label="Días (vertical)" [options]="dias.slice(0, 4)" [formControl]="demoCtrl.group" />
+      <app-checkbox-group label="Días (horizontal, máx. 3)" direction="horizontal" [maxSelected]="3" color="tertiary" [options]="dias" hint="Máximo 3" />
+      <app-checkbox-group label="Requerido" [required]="true" [options]="dias.slice(0, 3)" />
+    </div>
+    <h3>Radio group</h3>
+    <div class="demo-grid">
+      <app-radio-group label="Frecuencia (vertical)" [options]="frecuencias" [formControl]="demoCtrl.radio" />
+      <app-radio-group label="Horizontal" direction="horizontal" color="success" [options]="frecuencias" />
+      <app-radio-group label="Con descripción" [options]="planes" color="tertiary" size="lg" />
+      <app-radio-group label="Requerido" [required]="true" [options]="generos" />
+    </div>
+    <h3>Slide toggle</h3>
+    <div class="demo-row">
+      @for (c of colors; track c) {
+        <app-slide-toggle [color]="c" [formControl]="demoCtrl.toggle">{{ c }}</app-slide-toggle>
+      }
+    </div>
+    <div class="demo-row">
+      @for (s of sizes3; track s) {
+        <app-slide-toggle [size]="s">{{ s }}</app-slide-toggle>
+      }
+      <app-slide-toggle labelPosition="before">Etiqueta antes</app-slide-toggle>
+      <app-slide-toggle [showIcon]="false">Sin ícono</app-slide-toggle>
+      <app-slide-toggle [disabled]="true">Deshabilitado</app-slide-toggle>
+    </div>
+    <h3>Button toggle</h3>
+    <div class="demo-grid">
+      <app-button-toggle label="Simple" [options]="vistas" [formControl]="demoCtrl.bt" />
+      <app-button-toggle label="Múltiple" [multiple]="true" [options]="dias.slice(0, 4)" [formControl]="demoCtrl.btMulti" color="secondary" />
+      <app-button-toggle label="Ancho completo" [fullWidth]="true" [options]="frecuencias" color="tertiary" />
+      <app-button-toggle label="Pequeño (permite vaciar)" size="sm" [allowEmpty]="true" [options]="frecuencias" />
+      <app-button-toggle label="Grande" size="lg" color="success" [options]="frecuencias" />
+      <app-button-toggle label="Requerido" [required]="true" [options]="frecuencias" />
+    </div>
+  </section>
+
+  <!-- ============ FECHAS / NUMEROS ============ -->
+  <section id="fechas" class="demo-section">
+    <h2>Fechas, números y sliders</h2>
+    <h3>Datepicker</h3>
+    <div class="demo-grid">
+      @for (v of variants; track v) {
+        @for (s of sizes3; track s) {
+          <app-datepicker [label]="v + ' · ' + s" [variant]="v" [size]="s" />
+        }
+      }
+      <app-datepicker label="Solo días hábiles" [filter]="finDeSemana" hint="Sábado y domingo deshabilitados" />
+      <app-datepicker label="Máx. hoy · valor ISO" [max]="hoy" valueFormat="iso" [formControl]="demoCtrl.fecha" [hint]="'Valor: ' + (demoCtrl.fecha.value ?? 'null')" />
+      <app-datepicker label="Requerido" [required]="true" />
+      <app-datepicker label="Deshabilitado" [disabled]="true" />
+    </div>
+    <h3>Rango de fechas</h3>
+    <div class="demo-grid">
+      <app-date-range label="Periodo" [formControl]="demoCtrl.rango" />
+      <app-date-range label="Filled" variant="filled" color="tertiary" />
+    </div>
+    <h3>Number stepper</h3>
+    <div class="demo-grid">
+      <app-number-stepper label="Plazo" suffix="meses" [min]="1" [max]="48" [formControl]="demoCtrl.num" />
+      <app-number-stepper label="Decimales" [decimals]="2" [stepSize]="0.5" color="secondary" />
+      <app-number-stepper label="Pequeño" size="sm" [min]="0" [max]="5" />
+      <app-number-stepper label="Grande" size="lg" color="success" />
+      <app-number-stepper label="Requerido" [required]="true" />
+    </div>
+    <h3>Slider</h3>
+    <div class="demo-grid">
+      <app-slider label="Monto" [min]="1000" [max]="50000" [step]="500" [format]="moneda" [formControl]="demoCtrl.slider" />
+      <app-slider label="Rango" [range]="true" [formControl]="demoCtrl.sliderRange" color="tertiary" />
+      <app-slider label="Discreto" [discrete]="true" [max]="10" color="success" hint="Con etiqueta al arrastrar" />
+      <app-slider label="Deshabilitado" [disabled]="true" />
+    </div>
+  </section>
+
+  <!-- ============ CHIPS / FIRMA ============ -->
+  <section id="extras" class="demo-section">
+    <h2>Chips y firma</h2>
+    <div class="demo-grid">
+      <app-chips label="Correos (valida formato)" [validate]="esCorreo" [formControl]="demoCtrl.chips" hint="Enter o coma para agregar" />
+      <app-chips label="Tags (máx. 4)" [maxChips]="4" [formControl]="demoCtrl.chipsTags" color="tertiary" variant="filled" />
+      <app-chips label="Requerido" [required]="true" color="success" />
+    </div>
+    <div class="demo-grid">
+      <app-signature-pad label="Firma" [formControl]="demoCtrl.firma" hint="Dibuja con mouse o dedo" />
+      <app-signature-pad label="Requerida" [required]="true" [height]="120" />
+    </div>
+  </section>
+
+  <!-- ============ FEEDBACK / CARDS ============ -->
+  <section id="feedback" class="demo-section">
+    <h2>Diálogos, toasts y cards</h2>
+    <div class="demo-row">
+      <button appButton variant="filled" (click)="preguntar()">Confirmar</button>
+      <button appButton variant="tonal" color="error" icon="delete" (click)="eliminar()">Eliminar</button>
+    </div>
+    <div class="demo-row">
+      <button appButton variant="tonal" color="success" (click)="toast.success('Guardado correctamente')">Success</button>
+      <button appButton variant="tonal" color="error" (click)="toast.error('No se pudo guardar', { actionLabel: 'Reintentar' })">Error</button>
+      <button appButton variant="tonal" color="warning" (click)="toast.warning('Revisa los campos marcados')">Warning</button>
+      <button appButton variant="tonal" color="info" (click)="toast.info('Sincronizando…')">Info</button>
+    </div>
+    <h3>Cards</h3>
+    <div class="demo-cards">
+      @for (v of cardVariants; track v) {
+        @for (c of ['surface', 'primary', 'success', 'error']; track c) {
+          <app-card [variant]="v" [color]="$any(c)">
+            <div class="demo-card-body"><strong>{{ v }}</strong><span>{{ c }}</span></div>
+          </app-card>
+        }
+      }
+    </div>
+  </section>
+
+  <!-- ============ FORM FIELD ============ -->
+  <section id="formfield" class="demo-section">
+    <h2>app-form-field (equivalente a mat-form-field)</h2>
+    <p class="demo-note">
+      Label estático con asterisco automático, hint y error automático (al tocar y salir). No pases label/hint/required al control interno.
+    </p>
+    <div class="demo-grid">
+      <app-form-field label="Nombre" hint="Como aparece en tu INE">
+        <app-input [formControl]="demoCtrl.requiredEmpty" />
+      </app-form-field>
+      <app-form-field label="Estado">
+        <app-select [options]="estados" [formControl]="$any(demoCtrl.select)" />
+      </app-form-field>
+      <app-form-field label="Fecha de nacimiento" [required]="true">
+        <app-datepicker [formControl]="$any(demoCtrl.fecha)" />
+      </app-form-field>
+      <app-form-field label="Etiquetas">
+        <app-chips [formControl]="demoCtrl.chipsTags" />
+      </app-form-field>
+    </div>
+  </section>
+
+  <!-- ============ WIZARD ============ -->
+  <section id="wizard" class="demo-section">
+    <h2>Formulario completo · Solicitud de crédito</h2>
+    <p class="demo-note">
+      Wizard con validación por paso, validadores mexicanos (CURP, RFC, CLABE…), FormArray y firma. Los errores salen al tocar un campo o al intentar avanzar.
+    </p>
+
+    <form [formGroup]="form" class="demo-wizard" (ngSubmit)="enviar()">
+      <app-stepper [linear]="true" submitLabel="Enviar solicitud" [loading]="guardando()" (finished)="enviar()">
+        <!-- PASO 1 -->
+        <app-step label="Datos personales" icon="person" [control]="form.controls.personales">
+          <div formGroupName="personales" class="demo-grid">
+            <app-form-field label="Nombre completo">
+              <app-input formControlName="nombre" prefixIcon="badge" />
+            </app-form-field>
+            <app-form-field label="Correo" hint="Te enviaremos el resultado aquí">
+              <app-input formControlName="email" type="email" prefixIcon="mail" />
+            </app-form-field>
+            <app-form-field label="Teléfono">
+              <app-input formControlName="telefono" format="phone" prefixIcon="phone" />
+            </app-form-field>
+            <app-form-field label="CURP" hint="18 caracteres">
+              <app-input formControlName="curp" [maxLength]="18" />
+            </app-form-field>
+            <app-form-field label="RFC (persona física)" hint="Ej. VECJ880326XXX">
+              <app-input formControlName="rfc" [maxLength]="13" />
+            </app-form-field>
+            <app-form-field label="Fecha de nacimiento" hint="Debes ser mayor de edad">
+              <app-datepicker formControlName="nacimiento" valueFormat="iso" [max]="hace18" />
+            </app-form-field>
+            <app-form-field label="Género" [required]="true">
+              <app-radio-group formControlName="genero" direction="horizontal" [options]="generos" />
+            </app-form-field>
+          </div>
+        </app-step>
+
+        <!-- PASO 2 -->
+        <app-step label="Domicilio" icon="home" [control]="form.controls.domicilio">
+          <div formGroupName="domicilio" class="demo-grid">
+            <app-form-field label="Código postal">
+              <app-input formControlName="cp" format="digits" [maxLength]="5" />
+            </app-form-field>
+            <app-form-field label="Estado">
+              <app-searchable-select formControlName="estado" [options]="estados" [clearable]="true" />
+            </app-form-field>
+            <app-form-field label="Calle y número">
+              <app-input formControlName="calle" prefixIcon="location_on" />
+            </app-form-field>
+            <app-form-field label="Referencias del domicilio" hint="Opcional">
+              <app-input formControlName="notas" [multiline]="true" [rows]="2" [maxLength]="150" />
+            </app-form-field>
+          </div>
+        </app-step>
+
+        <!-- PASO 3 -->
+        <app-step label="Crédito" icon="payments" [control]="form.controls.financiero">
+          <div formGroupName="financiero" class="demo-stack">
+            <div class="demo-grid">
+              <app-form-field label="Plan">
+                <app-radio-group formControlName="plan" [options]="planes" />
+              </app-form-field>
+              <div class="demo-stack">
+                <app-form-field label="Monto solicitado">
+                  <app-slider formControlName="monto" [min]="1000" [max]="300000" [step]="1000" [format]="moneda" />
+                </app-form-field>
+                <app-form-field label="Plazo">
+                  <app-number-stepper formControlName="plazo" suffix="meses" [min]="1" [max]="48" />
+                </app-form-field>
+              </div>
+            </div>
+            <app-form-field label="Frecuencia de pago">
+              <app-button-toggle formControlName="frecuencia" [options]="frecuencias" />
+            </app-form-field>
+            <app-form-field label="Destino del crédito" hint="Puedes elegir varios">
+              <app-checkbox-group formControlName="destino" direction="horizontal" [options]="destinos" />
+            </app-form-field>
+            <app-form-field label="CLABE para depósito" hint="18 dígitos">
+              <app-input formControlName="clabe" format="digits" [maxLength]="18" />
+            </app-form-field>
+
+            <app-repeater
+              [array]="referencias"
+              [factory]="nuevaReferencia"
+              label="Referencias personales"
+              itemLabel="Referencia"
+              addLabel="Agregar referencia"
+              [min]="1"
+              [max]="3"
+            >
+              <ng-template let-g let-i="index">
+                <div class="demo-grid">
+                  <app-form-field label="Nombre">
+                    <app-input [formControl]="g.controls.nombre" />
+                  </app-form-field>
+                  <app-form-field label="Teléfono">
+                    <app-input [formControl]="g.controls.telefono" format="phone" />
+                  </app-form-field>
+                  <app-form-field label="Parentesco">
+                    <app-select [formControl]="g.controls.parentesco" [options]="[
+                      { label: 'Familiar', value: 'fam' },
+                      { label: 'Amigo', value: 'ami' },
+                      { label: 'Compañero de trabajo', value: 'trab' }
+                    ]" />
+                  </app-form-field>
+                </div>
+              </ng-template>
+            </app-repeater>
+          </div>
+        </app-step>
+
+        <!-- PASO 4 -->
+        <app-step label="Seguridad y firma" icon="draw" [control]="form.controls.seguridad">
+          <div formGroupName="seguridad" class="demo-stack">
+            <div class="demo-grid">
+              <app-form-field label="Contraseña" hint="8+ caracteres, mayúscula, número y símbolo">
+                <app-input formControlName="password" type="password" prefixIcon="lock" />
+              </app-form-field>
+              <app-form-field label="Confirmar contraseña">
+                <app-input formControlName="confirm" type="password" prefixIcon="lock" />
+              </app-form-field>
+            </div>
+            <app-form-field label="Firma del solicitante" [required]="true">
+              <app-signature-pad formControlName="firma" />
+            </app-form-field>
+            <app-form-field>
+              <app-checkbox formControlName="terminos">Acepto los términos y el aviso de privacidad</app-checkbox>
+            </app-form-field>
+          </div>
+        </app-step>
+      </app-stepper>
+    </form>
+
+    <div class="demo-row">
+      <button appButton variant="outlined" color="warning" type="button" (click)="validarTodo()">Marcar todos los errores</button>
+      <button appButton variant="text" color="secondary" type="button" (click)="resetForm()">Reiniciar formulario</button>
+      <app-badge [color]="form.valid ? 'success' : 'error'">{{ form.valid ? 'Formulario válido' : 'Formulario inválido' }}</app-badge>
+    </div>
+
+    <details class="demo-json" [open]="!!enviado()">
+      <summary>Valor del formulario {{ enviado() ? '(enviado)' : '(en vivo)' }}</summary>
+      <pre>{{ (enviado() ?? form.getRawValue()) | json }}</pre>
+    </details>
+  </section>
+</main>

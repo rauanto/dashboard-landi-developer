@@ -1,0 +1,22 @@
+<div class="flex flex-col h-full bg-[#323639] text-white relative">
+  <div class="flex items-center justify-between p-3 bg-[#202124] shadow-md z-10 border-b border-gray-700">
+    <div class="flex items-center gap-3">
+      <button mat-icon-button (click)="close()" matTooltip="Cerrar" class="text-gray-300 hover:text-white">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2 class="text-base font-medium m-0 flex items-center gap-2 text-white">
+        <mat-icon style="color: #ea4335;">picture_as_pdf</mat-icon>
+        {{ data.fileName || 'Reporte.pdf' }}
+      </h2>
+    </div>
+    <div class="flex items-center gap-2">
+      <button mat-icon-button (click)="downloadPdf()" matTooltip="Descargar" class="text-gray-300 hover:text-white">
+        <mat-icon>download</mat-icon>
+      </button>
+    </div>
+  </div>
+  
+  <div class="flex-grow p-0 overflow-hidden relative bg-[#323639]">
+    <iframe [src]="safePdfUrl" class="w-full h-full border-none absolute inset-0" title="Visor de PDF"></iframe>
+  </div>
+</div>

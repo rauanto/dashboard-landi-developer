@@ -1,0 +1,121 @@
+<!-- Mobile overlay backdrop -->
+@if (sidenavService.isMobile() && sidenavService.isMobileOpen()) {
+  <div class="sidebar-backdrop" (click)="sidenavService.closeMobile()"></div>
+}
+
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside
+    class="dashboard-sidebar"
+    [class.expanded]="!sidenavService.isMobile() && sidenavService.isOpen()"
+    [class.collapsed]="!sidenavService.isMobile() && !sidenavService.isOpen()"
+    [class.mobile-open]="sidenavService.isMobile() && sidenavService.isMobileOpen()"
+    [class.mobile-hidden]="sidenavService.isMobile() && !sidenavService.isMobileOpen()"
+  >
+    <div class="sidenav-layout">
+
+      <!-- ===== Brand + Toggle row ===== -->
+      <div class="sidenav-topbar" [class.sidenav-topbar--collapsed]="!sidenavService.isExpanded()">
+
+        @if (sidenavService.isExpanded()) {
+          <!-- EXPANDED: logo + name + collapse button in one row -->
+          <div class="brand-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 106.96 108.89" aria-hidden="true">
+              <path class="brand-logo-path" d="M51.11.04c72.27-2.42,75.02,105.84,4.57,108.79C-15.99,111.83-19.5,2.41,51.11.04ZM49.53,4.77C32.75,5.39,12.77,23.49,6.89,38.58c-8.83,22.67,4.37,35.01,26.62,25.81,16.76-6.93,36.61-29.34,32.53-48.72-1.48-7.04-9.68-11.16-16.51-10.91ZM82.91,41.39c-13.91,1.75-29.26,14.91-36.26,26.6-15.46,25.83-1.1,45.71,26.92,30.88,13.37-7.08,28.18-24.35,29.35-39.9.94-12.58-8.03-19.09-20-17.59Z"/>
+            </svg>
+          </div>
+          <span class="brand-name">FinCrece</span>
+          <span class="brand-spacer"></span>
+          <button
+            mat-icon-button
+            (click)="sidenavService.isMobile() ? sidenavService.closeMobile() : sidenavService.toggle()"
+            class="topbar-toggle-btn"
+            matTooltip="Cerrar barra lateral"
+            matTooltipPosition="right"
+            aria-label="Colapsar menú de navegación"
+          >
+            <mat-icon>dock_to_right</mat-icon>
+          </button>
+
+        } @else {
+          <!--
+            COLLAPSED: single button. Shows the logo by default.
+            On hover → logo fades out, expand icon fades in (via signal).
+          -->
+          <button
+            (click)="sidenavService.toggle()"
+            (mouseenter)="brandHovered.set(true)"
+            (mouseleave)="brandHovered.set(false)"
+            class="brand-toggle-btn"
+            matRipple
+            [matRippleCentered]="true"
+            [matRippleRadius]="20"
+            matTooltip="Abrir barra lateral"
+            matTooltipPosition="right"
+            aria-label="Expandir menú de navegación"
+          >
+            <!-- Logo layer: visible by default, fades on hover -->
+            <span
+              class="brand-toggle-logo"
+              [style.opacity]="brandHovered() ? 0 : 1"
+              [style.transform]="brandHovered() ? 'scale(0.7)' : 'scale(1)'"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 106.96 108.89" aria-hidden="true">
+                <path class="brand-logo-path" d="M51.11.04c72.27-2.42,75.02,105.84,4.57,108.79C-15.99,111.83-19.5,2.41,51.11.04ZM49.53,4.77C32.75,5.39,12.77,23.49,6.89,38.58c-8.83,22.67,4.37,35.01,26.62,25.81,16.76-6.93,36.61-29.34,32.53-48.72-1.48-7.04-9.68-11.16-16.51-10.91ZM82.91,41.39c-13.91,1.75-29.26,14.91-36.26,26.6-15.46,25.83-1.1,45.71,26.92,30.88,13.37-7.08,28.18-24.35,29.35-39.9.94-12.58-8.03-19.09-20-17.59Z"/>
+              </svg>
+            </span>
+            <!-- Expand icon layer: hidden by default, appears on hover -->
+            <span
+              class="brand-toggle-expand-icon"
+              [style.opacity]="brandHovered() ? 1 : 0"
+              [style.transform]="brandHovered() ? 'scale(1)' : 'scale(0.7)'"
+            >
+              <mat-icon>dock_to_right</mat-icon>
+            </span>
+          </button>
+        }
+      </div>
+
+      <!-- Profile / header slot -->
+      <div class="sidenav-header">
+        <ng-content select="[sidenav-header]"></ng-content>
+      </div>
+
+      <!-- Navigation -->
+      <div class="sidenav-body">
+        <ng-content select="[sidenav-nav]"></ng-content>
+      </div>
+
+      <!-- Footer -->
+      <div class="sidenav-footer">
+        <ng-content select="[sidenav-footer]"></ng-content>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="dashboard-main">
+    @if (routeLoading.isNavigating()) {
+      <mat-progress-bar mode="indeterminate" class="route-progress-bar"></mat-progress-bar>
+    }
+
+    <mat-toolbar class="dashboard-toolbar">
+      @if (sidenavService.isMobile()) {
+        <button mat-icon-button (click)="sidenavService.toggleMobile()" class="menu-button">
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+
+      <ng-content select="[toolbar-title]"></ng-content>
+
+      <span class="spacer"></span>
+
+      <ng-content select="[toolbar-actions]"></ng-content>
+    </mat-toolbar>
+
+    <section class="content-wrapper">
+      <ng-content></ng-content>
+    </section>
+  </main>
+</div>

@@ -1,0 +1,338 @@
+/* ===== Dashboard Container ===== */
+.dashboard-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ===== Sidebar ===== */
+.dashboard-sidebar {
+    height: 100vh;
+    background-color: var(--mat-sys-surface-container);
+    border-right: 1px solid var(--mat-sys-outline-variant);
+    overflow: hidden;
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    z-index: 200;
+}
+
+.dashboard-sidebar.expanded {
+    width: 260px;
+}
+
+.dashboard-sidebar.collapsed {
+    width: 56px;
+}
+
+/* Mobile: overlay sidebar */
+.dashboard-sidebar.mobile-hidden {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+}
+
+.dashboard-sidebar.mobile-open {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 260px;
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Backdrop for mobile */
+.sidebar-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 199;
+    animation: backdropFadeIn 0.25s ease forwards;
+}
+
+@keyframes backdropFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ===== Sidenav internal layout ===== */
+.sidenav-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ===== Brand + Toggle topbar ===== */
+.sidenav-topbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 8px 8px 14px;
+    min-height: 56px;
+    overflow: hidden;
+}
+
+.sidenav-topbar--collapsed {
+    justify-content: center;
+    padding: 10px 0 4px 0;
+}
+
+.brand-logo {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-logo--solo {
+    transform: scale(1.05);
+}
+
+.brand-logo svg {
+    width: 100%;
+    height: 100%;
+}
+
+.brand-logo-path {
+    fill: var(--mat-sys-primary);
+}
+
+.brand-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--mat-sys-on-surface);
+    white-space: nowrap;
+    letter-spacing: 0.3px;
+    animation: sidenavLabelIn 0.22s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Pushes the collapse button to the far right */
+.brand-spacer {
+    flex: 1 1 auto;
+}
+
+/* Collapse button (visible when expanded, top-right of topbar) */
+.topbar-toggle-btn {
+    color: var(--mat-sys-on-surface-variant) !important;
+    flex-shrink: 0;
+    transition: color 0.2s ease, opacity 0.2s ease;
+    opacity: 0.7;
+}
+
+.topbar-toggle-btn:hover {
+    color: var(--mat-sys-primary) !important;
+    opacity: 1;
+}
+
+/* ===== Collapsed brand: single toggle button (logo ↔ expand icon) ===== */
+.brand-toggle-btn {
+    /* Reset native button styles */
+    appearance: none;
+    border: none;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+
+    /* Sizing — same as mat-icon-button */
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    /* Critical: must NOT be overflow:hidden so the absolute layers show */
+    overflow: visible;
+
+    /* Center content */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Hover background */
+    transition: background-color 0.2s ease;
+}
+
+.brand-toggle-btn:hover {
+    background-color: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+}
+
+.brand-toggle-btn:focus-visible {
+    outline: 2px solid var(--mat-sys-primary);
+    outline-offset: 2px;
+}
+
+/* Both layers stack in the same cell using absolute positioning */
+.brand-toggle-logo,
+.brand-toggle-expand-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+}
+
+/* --- Logo layer --- */
+.brand-toggle-logo {
+    transform: scale(1);
+}
+
+.brand-toggle-logo svg {
+    width: 28px;
+    height: 28px;
+}
+
+/* --- Expand icon layer --- */
+.brand-toggle-expand-icon mat-icon {
+    color: var(--mat-sys-primary);
+}
+/* Note: opacity and transform are driven by Angular signal via [style] bindings */
+
+/* ===== Animations ===== */
+@keyframes sidenavLabelIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===== Sidenav Sections ===== */
+.sidenav-header {
+    padding: 8px;
+    overflow: hidden;
+}
+
+.sidenav-body {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px;
+}
+
+.sidenav-footer {
+    padding: 12px 8px;
+    border-top: 1px solid var(--mat-sys-outline-variant);
+    overflow: hidden;
+}
+
+/* ===== Fade-in for sidenav content on appear ===== */
+/* Profile card, nav items, footer buttons that appear from @if blocks */
+.sidenav-header > *,
+.sidenav-footer > * {
+    animation: sidenavContentIn 0.2s ease forwards;
+}
+
+@keyframes sidenavContentIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96) translateX(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateX(0);
+    }
+}
+
+/* ===== Main Content Area ===== */
+.dashboard-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* ===== Route Progress Bar ===== */
+.route-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 101;
+    height: 3px;
+}
+
+/* ===== Toolbar ===== */
+.dashboard-toolbar {
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    padding: 0 24px;
+    height: 56px;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 100;
+    flex-shrink: 0;
+    background-color: var(--mat-sys-primary-container);
+}
+
+.menu-button {
+    margin-right: 16px;
+    color: inherit;
+}
+
+.dashboard-toolbar button,
+.dashboard-toolbar mat-icon,
+.dashboard-toolbar .mat-icon-button {
+    color: inherit !important;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}
+
+/* ===== Content Wrapper ===== */
+.content-wrapper {
+    padding: 32px;
+    flex: 1;
+    overflow-y: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (max-width: 599px) {
+    .content-wrapper {
+        padding: 16px;
+    }
+
+    .dashboard-toolbar {
+        padding: 0 12px;
+    }
+}
+
+/* ===== Scrollbar styling ===== */
+.sidenav-body::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidenav-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidenav-body::-webkit-scrollbar-thumb {
+    background: var(--mat-sys-outline-variant);
+    border-radius: 2px;
+}
+
+
+
+:host.container-color .dashboard-toolbar ::ng-deep .mat-icon-button {
+    color: inherit !important;
+}

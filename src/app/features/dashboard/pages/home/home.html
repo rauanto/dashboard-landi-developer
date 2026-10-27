@@ -1,0 +1,630 @@
+<!-- <app-page-header title="El Título de la Página"></app-page-header> -->
+
+<div class="">
+  <div class="mb-6 w-full sticky top-0 z-10">
+    <app-pill-tabs [tabs]="tabs" [(activeTabId)]="activeTab" align="start"> </app-pill-tabs>
+  </div>
+
+  <div class="p-5 text-6xl font-light">Elementos y Componentes</div>
+  <mat-divider />
+  <div class="mt-8 p-6 rounded-2xl">
+    @switch (activeTab()) {
+      @case ('buttons') {
+        <div class="flex flex-wrap gap-4 items-center mt-4">
+          <button appButton variant="filled" color="primary">Guardar</button>
+          <button appButton variant="tonal" color="success" icon="check_circle">
+            Aprobar estimación
+          </button>
+          <button appButton variant="outlined" color="error" size="md">Cancelar</button>
+          <button appButton variant="text" color="info">Guardar cambios</button>
+          <a appButton variant="elevated" color="secondary" routerLink="/reportes">
+            Ver reportes
+          </a>
+          <button appButton variant="tonal" color="warning">Guardar cambios</button>
+        </div>
+      }
+
+      @case ('inputs') {
+        <div class="w-full max-w-8xl mt-8 flex flex-col gap-8">
+          <!-- OTP: Códigos de verificación de hasta 6 dígitos -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Código OTP / PIN (Hasta 6 dígitos)
+            </h3>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 rounded-2xl bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800"
+            >
+              <div class="flex flex-col gap-2">
+                <app-otp-input
+                  label="Código de verificación (6 dígitos)"
+                  [length]="6"
+                  hint="Autofoco, borrado con retroceso y soporte para pegar (Ctrl+V)"
+                />
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <app-otp-input
+                  label="PIN de seguridad (4 dígitos ocultos)"
+                  variant="filled"
+                  color="secondary"
+                  [length]="4"
+                  [masked]="true"
+                  hint="Modo enmascarado tipo contraseña"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Parsers y Formateadores: Teléfono, Moneda y Solo Dígitos -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Parseo y Formateo en Vivo (Teléfonos, Cantidades y Dígitos)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- Teléfono formateado -->
+              <app-input
+                label="Teléfono"
+                format="phone"
+                prefixIcon="phone"
+                placeholder="(555) 000-0000"
+                hint="Formatea automáticamente a (XXX) XXX-XXXX"
+              />
+
+              <!-- Cantidades / Moneda con comas y centavos -->
+              <app-input
+                label="Monto de estimación"
+                format="currency"
+                prefixIcon="payments"
+                suffixText="MXN"
+                placeholder="$ 0.00"
+                hint="Separa miles con comas y restringe decimales"
+              />
+
+              <!-- Solo dígitos numéricos -->
+              <app-input
+                label="Cantidad de piezas"
+                format="digits"
+                prefixIcon="numbers"
+                placeholder="12345"
+                hint="Solo admite números (bloquea letras y símbolos)"
+              />
+            </div>
+          </div>
+
+          <!-- Cantidad Mínima y Exacta de Números o Palabras -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Validación y Contador (Cantidad Mínima y Exacta de Caracteres o Palabras)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Cantidad exacta de caracteres / dígitos -->
+              <app-input
+                label="Código de lote (Exacto 10 caracteres)"
+                [exactLength]="10"
+                prefixIcon="pin"
+                placeholder="Ej. AB12345678"
+                hint="Indica cuántos faltan o si cumple exactamente 10"
+              />
+
+              <!-- Cantidad mínima de caracteres -->
+              <app-input
+                label="Nueva contraseña (Mínimo 8 caracteres)"
+                type="password"
+                [minLength]="8"
+                prefixIcon="shield"
+                hint="Muestra indicador de progreso hasta alcanzar 8"
+              />
+
+              <!-- Cantidad mínima de palabras -->
+              <app-input
+                label="Justificación (Mínimo 5 palabras)"
+                [multiline]="true"
+                [rows]="2"
+                [minWords]="5"
+                hint="Cuenta las palabras y valida el mínimo requerido"
+              />
+
+              <!-- Cantidad exacta de palabras -->
+              <app-input
+                label="Frase de pase (Exacto 3 palabras)"
+                [exactWords]="3"
+                prefixIcon="vpn_key"
+                hint="Requiere exactamente tres palabras separadas por espacio"
+              />
+            </div>
+          </div>
+
+          <!-- Estado Disabled y Variantes Base -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Estado Disabled & Variantes Base
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- Disabled Outlined -->
+              <app-input
+                label="RFC de la empresa"
+                prefixIcon="business"
+                [disabled]="true"
+                placeholder="ABC123456XYZ"
+                hint="Campo deshabilitado (Outlined)"
+              />
+
+              <!-- Disabled Filled -->
+              <app-input
+                label="ID de sistema (Solo lectura)"
+                variant="filled"
+                prefixIcon="lock"
+                [disabled]="true"
+                placeholder="SYS-8921-99"
+                hint="Campo deshabilitado (Filled)"
+              />
+
+              <!-- Búsqueda con limpiar -->
+              <app-input
+                label="Buscar obra"
+                prefixIcon="search"
+                [clearable]="true"
+                hint="Con botón interactivo de limpieza"
+              />
+            </div>
+          </div>
+
+          <!-- Validación Requerido en Inputs / OTP -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Validación Requerido &mdash; error al salir del campo sin valor
+            </h3>
+            <div
+              class="grid grid-cols-1 md:grid-cols-3 gap-4 p-5 rounded-2xl border-2 border-dashed border-red-200 dark:border-red-900/40 bg-red-50/40 dark:bg-red-900/10"
+            >
+              <app-input
+                label="Nombre completo"
+                prefixIcon="person"
+                [required]="true"
+                placeholder="Juan Pérez"
+                hint="Haz clic, luego sal del campo sin escribir"
+              />
+
+              <app-input
+                label="Teléfono"
+                prefixIcon="phone"
+                format="phone"
+                [required]="true"
+                [exactLength]="10"
+                hint="Requerido: 10 dígitos formato (###) ###-####"
+              />
+
+              <app-otp-input
+                label="Código de autorización"
+                [length]="6"
+                [required]="true"
+                hint="Toca una celda y sal sin completar"
+              />
+            </div>
+          </div>
+        </div>
+      }
+
+      @case ('badges') {
+        <div class="flex flex-wrap gap-4 items-center mt-4">
+          <app-badge color="success" variant="tonal" icon="check_circle"> Aprobado </app-badge>
+          <app-badge color="warning" variant="outlined" size="lg">Pendiente</app-badge>
+          <app-badge color="error" variant="outlined">Rechazado</app-badge>
+          <app-badge color="info" variant="filled" size="xs">Nuevo</app-badge>
+        </div>
+      }
+
+      @case ('cards') {
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+          <app-card variant="elevated" color="surface">
+            <h3 class="text-xl font-medium mb-2">Elevated Card</h3>
+            <p class="text-gray-600 dark:text-gray-400">
+              Esta es una tarjeta elevada estándar, ideal para contenido principal y acciones
+              destacadas.
+            </p>
+          </app-card>
+
+          <app-card variant="filled" color="secondary">
+            <h3 class="text-xl font-medium mb-2">Filled Card</h3>
+            <p>
+              Tarjeta con fondo sólido (secondary container), útil para agrupar elementos
+              secundarios.
+            </p>
+          </app-card>
+
+          <app-card variant="outlined" color="primary">
+            <h3 class="text-xl font-medium mb-2">Outlined Card</h3>
+            <p>Tarjeta con borde (primary), sin elevación base. Útil para listas o galerías.</p>
+          </app-card>
+
+          <app-card variant="elevated" color="error">
+            <h3 class="text-xl font-medium mb-2">Error Card</h3>
+            <p>Tarjeta de alerta o estado crítico.</p>
+          </app-card>
+        </div>
+      }
+
+      @case ('selects') {
+        <div class="w-full max-w-2xl mt-8 flex flex-col gap-8">
+          <!-- Select Estándar y con buscador incorporado -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Select Estándar & Searchable
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <app-select label="Rol (Estándar)" [options]="roleOptions" prefixIcon="person" />
+              <app-searchable-select
+                label="País (Con Buscador)"
+                [options]="countryOptions"
+                prefixIcon="travel_explore"
+                searchPlaceholder="Filtrar países..."
+                [clearable]="true"
+              />
+            </div>
+          </div>
+
+          <!-- Multi Select -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Multi Select con Chips & Checkboxes
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <app-multi-select
+                label="Tecnologías (Outlined)"
+                [options]="technologyOptions"
+                prefixIcon="code"
+                [maxDisplayedChips]="2"
+                [searchable]="true"
+                searchPlaceholder="Buscar tecnología..."
+              />
+              <app-multi-select
+                label="Roles múltiples (Filled)"
+                variant="filled"
+                color="secondary"
+                [options]="roleOptions"
+                prefixIcon="group"
+                [maxDisplayedChips]="2"
+              />
+            </div>
+          </div>
+
+          <!-- Autocomplete -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Autocomplete (Escritura en vivo)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <app-autocomplete
+                label="Buscar país (Sugerencias)"
+                [options]="countryOptions"
+                prefixIcon="search"
+                placeholder="Empieza a escribir..."
+              />
+              <app-autocomplete
+                label="Entrada libre (FreeText)"
+                variant="filled"
+                color="tertiary"
+                [options]="technologyOptions"
+                prefixIcon="edit_note"
+                [freeText]="true"
+                placeholder="Escribe o selecciona..."
+              />
+            </div>
+          </div>
+
+          <!-- Validación Requerido y Catálogo en Selects -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Requerido y validación de catálogo &mdash; error si se sale sin seleccionar o valor
+              fuera del catálogo
+            </h3>
+            <div
+              class="grid grid-cols-1 md:grid-cols-3 gap-4 p-5 rounded-2xl border-2 border-dashed border-red-200 dark:border-red-900/40 bg-red-50/40 dark:bg-red-900/10"
+            >
+              <app-select
+                label="Rol"
+                [options]="roleOptions"
+                prefixIcon="badge"
+                [required]="true"
+                hint="Sal del campo sin seleccionar para ver el error"
+              />
+
+              <app-multi-select
+                label="Categorías"
+                [options]="technologyOptions"
+                prefixIcon="category"
+                [required]="true"
+                [maxDisplayedChips]="2"
+                hint="Debes elegir al menos una opción"
+              />
+
+              <app-autocomplete
+                label="País (Solo del catálogo)"
+                [options]="countryOptions"
+                prefixIcon="travel_explore"
+                [required]="true"
+                placeholder="Escribe algo que no exista..."
+                hint="Escribe una palabra inventada para ver el error de catálogo"
+              />
+            </div>
+          </div>
+        </div>
+      }
+
+      @case ('files') {
+        <div class="w-full max-w-4xl mt-8 flex flex-col gap-8">
+          <!-- 1. Dropzone para Documentos (PDF, Excel, Word) -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Área Dropzone para Documentos (Múltiple)
+            </h3>
+            <app-file-upload
+              label="Comprobantes y contratos oficiales"
+              category="documents"
+              [multiple]="true"
+              [maxFileSizeMb]="15"
+              hint="Formatos admitidos: PDF, Word (.docx), Excel (.xlsx) y CSV. Máx 15 MB por archivo."
+            />
+          </div>
+
+          <!-- 2. Dropzone para Imágenes con galería de miniaturas -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Área Dropzone para Imágenes (Con vista previa en lista)
+            </h3>
+            <app-file-upload
+              label="Evidencias fotográficas de obra"
+              category="images"
+              [multiple]="true"
+              [maxFileSizeMb]="8"
+              hint="Formatos admitidos: PNG, JPG, WEBP o SVG con previsualización en miniatura."
+            />
+          </div>
+
+          <!-- 3. Variante Avatar / Foto de Perfil y Logotipo -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Variante Imagen Directa (Avatar circular y Banner rectangular)
+            </h3>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 rounded-2xl bg-gray-50 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800"
+            >
+              <div class="flex flex-col gap-2">
+                <span class="text-xs font-semibold text-gray-500 uppercase"
+                  >Avatar de perfil (Circular)</span
+                >
+                <app-file-upload
+                  variant="image"
+                  shape="circle"
+                  hint="Pasa el cursor sobre la foto para cambiar o eliminar"
+                />
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <span class="text-xs font-semibold text-gray-500 uppercase"
+                  >Banner o Logotipo (Rectangular)</span
+                >
+                <app-file-upload
+                  variant="image"
+                  shape="rectangle"
+                  hint="Ideal para portadas, logotipos o firmas digitales"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Variantes Compacta y Botón Píldora -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Variantes Compacta & Botón (Para formularios y modales densos)
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Barra compacta -->
+              <div class="flex flex-col gap-2">
+                <span class="text-xs font-semibold text-gray-500 uppercase"
+                  >Barra horizontal tipo píldora</span
+                >
+                <app-file-upload
+                  variant="compact"
+                  label="Constancia fiscal"
+                  compactPlaceholder="Examinar archivo PDF..."
+                  hint="Barra compacta de una sola línea"
+                />
+              </div>
+
+              <!-- Botón directo -->
+              <div class="flex flex-col gap-2">
+                <span class="text-xs font-semibold text-gray-500 uppercase"
+                  >Botón directo de adjuntar</span
+                >
+                <app-file-upload
+                  variant="button"
+                  label="Anexo complementario"
+                  buttonText="Adjuntar reporte"
+                  hint="Botón píldora con lista de adjuntos inferior"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Validación Requerido en Archivos -->
+          <div class="flex flex-col gap-3">
+            <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              Requerido en File Upload &mdash; error al interactuar sin adjuntar
+            </h3>
+            <div
+              class="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 rounded-2xl border-2 border-dashed border-red-200 dark:border-red-900/40 bg-red-50/40 dark:bg-red-900/10"
+            >
+              <app-file-upload
+                label="Contrato firmado"
+                category="documents"
+                [required]="true"
+                hint="Haz clic en el área y cierra sin seleccionar para ver el error"
+              />
+
+              <app-file-upload
+                variant="compact"
+                label="Identificación oficial"
+                [required]="true"
+                compactPlaceholder="Ninguna identificación adjunta..."
+                hint="Barra compacta requerida"
+              />
+            </div>
+          </div>
+        </div>
+      }
+
+      @case ('checkboxes') {
+        <div class="flex flex-wrap gap-4 items-center mt-4">
+          <app-checkbox [label]="'Acepto términos y condiciones'"></app-checkbox>
+          <app-checkbox [label]="'Recibir notificaciones'"></app-checkbox>
+
+          <app-checkbox-group
+            [label]="'Selecciona tus tecnologías preferidas'"
+            [options]="technologyOptions"
+            hint="Puedes marcar varias opciones"
+            name="tech-stack-group"
+            [required]="true"
+          />
+
+
+        </div>
+      }
+
+      @case ('radios') {
+        <div class="flex flex-wrap gap-4 items-center mt-4">
+          <app-radio-group
+            [label]="'Selecciona tu tipo de cliente'"
+            [options]="roleOptions"
+            direction="horizontal"
+            [required]="true"
+          />
+        </div>
+        <app-radio-group
+          label="Persona"
+          [options]="technologyOptions"
+          direction="horizontal"
+        />
+      }
+
+      @case('slide-toggles') {
+        <div class="flex flex-col gap-4">
+          <app-slide-toggle label="Habilitar notificaciones"></app-slide-toggle>
+          <app-slide-toggle label="Modo oscuro"></app-slide-toggle>
+          <app-slide-toggle label="Modo oscuro" color="success"></app-slide-toggle>
+          <app-slide-toggle label="Modo oscuro"  [disabled]="true"></app-slide-toggle>
+        </div>
+      }
+
+      @case('datepickers') {
+        <div class="flex flex-col gap-4">
+          <app-datepicker label="Fecha de nacimiento"></app-datepicker>
+          <app-datepicker label="Fecha de nacimiento" color="success"></app-datepicker>
+          <app-datepicker label="Fechas de Evaluaciones"></app-datepicker>
+        </div>
+        <div>
+          <app-date-range label="Periodo de Evaluación"></app-date-range>
+          <app-date-range label="Periodo de Evaluación" color="success"></app-date-range>
+          <app-date-range label="Periodo de Evaluación" [disabled]="true"></app-date-range>
+        </div>
+      }
+
+      @case('form-fields') {
+        <div class="flex flex-col gap-4">
+          <app-form-field label="Nombre completo">
+            <app-input placeholder="Nombre completo"></app-input>
+          </app-form-field>
+          <app-form-field label="Nombre completo" color="success">
+            <app-input placeholder="Nombre completo"></app-input>
+          </app-form-field>
+          <app-form-field label="Nombre completo"  >
+            <app-input placeholder="Nombre completo"></app-input>
+          </app-form-field>
+        </div>
+      }
+      @case('chips') {
+        <div class="flex flex-col gap-4">
+          <app-chips label="Nombre completo"></app-chips>
+          <app-chips label="Nombre completo" color="success"></app-chips>
+          <app-chips label="Nombre completo"  >
+            <app-input placeholder="Nombre completo"></app-input>
+          </app-chips>
+          <app-chips label="Nombre completo"  >
+            <app-input placeholder="Nombre completo"></app-input>
+          </app-chips>
+        </div>
+      }
+      @case('sliders') {
+        <div class="flex flex-col gap-4">
+          <app-slider label="Nombre completo"></app-slider>
+          <app-slider label="Nombre completo" color="success"></app-slider>
+          <app-slider label="Nombre completo"  >
+            <app-input placeholder="Nombre completo"></app-input>
+          </app-slider>
+        </div>
+        <div>
+          <app-slider label="Nombre completo"  [discrete]="true" [step]="5">
+          </app-slider>
+         
+        </div>
+      }
+
+      @case('button-toggles') {
+        <div class="flex flex-col gap-4">
+          <app-button-toggle label="Nombre completo" 
+          [options]="[
+            {
+              label: 'Opción 1',
+              value: 'opcion-1'
+            },
+            {
+              label: 'Opción 2',
+              value: 'opcion-2'
+            },
+            {
+              label: 'Opción 3',
+              value: 'opcion-3'
+            }
+          ]">
+          </app-button-toggle>
+        </div>
+      }
+
+      @case('number-steppers') {
+        <div class="flex flex-col gap-4">
+          <app-number-stepper label="Nombre completo"></app-number-stepper>
+          <app-number-stepper label="Nombre completo" color="success"></app-number-stepper>
+          <app-number-stepper label="Nombre completo"  >
+            <app-input placeholder="Nombre completo"></app-input>
+          </app-number-stepper>
+        </div>
+        <div>
+          <app-number-stepper label="Nombre completo"  \>
+          </app-number-stepper>
+         
+        </div>
+      }
+
+      @case('steppers') {
+        <div class="flex flex-col gap-4">
+          <app-stepper label="Formulario de Datos personales">
+            <app-step label="Datos personales">
+              <app-input placeholder="Nombre completo"></app-input>
+            </app-step>
+            <app-step label="Datos de contacto">
+              <app-input placeholder="Correo electrónico"></app-input>
+            </app-step>
+            <app-step label="Datos de contacto">
+              <app-input placeholder="Correo electrónico"></app-input>
+            </app-step>
+            <app-stepper label="Datos de contacto">
+              <app-input placeholder="Traje de ba;o"></app-input>
+            </app-stepper>
+          </app-stepper>
+          
+        </div>
+
+      }
+    }
+  </div>
+</div>

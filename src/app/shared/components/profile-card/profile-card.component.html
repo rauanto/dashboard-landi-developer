@@ -1,0 +1,37 @@
+<div class="footer-profile-container" [class.collapsed]="!sidenavService.isExpanded()">
+  
+  <button
+    mat-button
+    class="profile-user-btn"
+    [class.collapsed-btn]="!sidenavService.isExpanded()"
+    (click)="openAccountPanel()"
+  >
+    <div class="profile-content-wrapper">
+      <div class="profile-avatar-box">
+        @if (user()?.FOTO) {
+          <img [src]="user()?.FOTO" alt="User avatar" class="profile-avatar-img">
+        } @else {
+          <span>{{ user()?.P_NOMBRE ? user()!.P_NOMBRE.charAt(0) : 'A' }}</span>
+        }
+      </div>
+      @if (sidenavService.isExpanded()) {
+        <div class="profile-details">
+          <div class="profile-name" [title]="(user()?.P_NOMBRE || '') + ' ' + (user()?.P_AP_PATERNO || '')">
+            {{ user()?.P_NOMBRE || 'Analista' }} {{ user()?.P_AP_PATERNO || '' }}
+          </div>
+          <div class="profile-role">{{ userRoleName() }}</div>
+        </div>
+      }
+    </div>
+  </button>
+
+  <button 
+    mat-icon-button 
+    class="profile-settings-btn" 
+    matTooltip="Configuración"
+    [matTooltipPosition]="sidenavService.isExpanded() ? 'above' : 'right'"
+  >
+    <mat-icon>settings</mat-icon>
+  </button>
+
+</div>

@@ -1,0 +1,119 @@
+.footer-profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2px;
+    padding: 0; /* The parent sidenav-footer already provides padding */
+}
+
+.footer-profile-container.collapsed {
+    flex-direction: column;
+    padding: 0;
+    gap: 8px;
+}
+
+/* User Button */
+.profile-user-btn {
+    flex: 1;
+    min-width: 0;
+    padding: 4px !important;
+    border-radius: 8px !important; 
+    height: 48px !important; 
+    line-height: normal !important;
+}
+
+/* Force native MDC button label to take full width so flex left-aligns */
+::ng-deep .profile-user-btn .mdc-button__label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.profile-user-btn.collapsed-btn {
+    flex: none;
+    padding: 0 !important;
+    border-radius: 100% !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+}
+
+/* Wrapper inside mat-button to control flex layout */
+.profile-content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.profile-user-btn.collapsed-btn .profile-content-wrapper {
+    justify-content: center;
+}
+
+/* Avatar Box */
+.profile-avatar-box {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    overflow: hidden;
+}
+
+.profile-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    text-align: left;
+}
+
+.profile-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--mat-sys-on-surface);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-role {
+    font-size: 0.7rem;
+    color: var(--mat-sys-on-surface-variant);
+}
+
+/* Settings Button */
+.profile-settings-btn {
+    color: var(--mat-sys-on-surface-variant) !important;
+}
+
+.profile-settings-btn:hover {
+    color: var(--mat-sys-primary) !important;
+}
+
+.footer-profile-container.collapsed .profile-settings-btn {
+    margin: 0 auto;
+}
+
+.profile-avatar-box.avatar-analista {
+    background-color: #ffe66d !important;
+    color: #5a4a00 !important;
+}
+
+.profile-avatar-box.avatar-comercial {
+    background-color: #8adf8d;
+    color: #004722;
+}

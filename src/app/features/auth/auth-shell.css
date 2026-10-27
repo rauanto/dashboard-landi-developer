@@ -1,0 +1,277 @@
+/*
+ * Estilos de la "cáscara" compartida por las páginas de auth (login, register):
+ * fondo a pantalla completa + panel de marca + card estilo Google.
+ * Se importa desde cada página con @import para no duplicar reglas.
+ */
+
+.login-page {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+  background-image: url('/assets/img/bg-login.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.login-page__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 24, 73, 0.6) 0%,
+    rgba(0, 24, 73, 0.2) 45%,
+    rgba(0, 24, 73, 0.75) 100%
+  );
+}
+
+/* ---- Panel de marca (copy tipo hero) ---- */
+.login-page__brand {
+  position: relative;
+  z-index: 1;
+  display: none;
+  flex: 1.1 1 0%;
+}
+
+.login-page__brand-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 3rem;
+  color: #ffffff;
+}
+
+.login-page__hero h1 {
+  max-width: 24rem;
+  margin: 0 0 0.75rem;
+  font-size: 2.25rem;
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+.login-page__hero p {
+  max-width: 22rem;
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* ---- Marca / logo ---- */
+.login-page__logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.login-page__logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.login-page__logo-mark img {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* ---- Panel del formulario ---- */
+.login-page__form-panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1 1 0%;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.login-page__card {
+  width: 100%;
+  max-width: 28rem;
+}
+
+/* ---- Layout tipo tarjeta de Google: marca a la izquierda, campos a la derecha ---- */
+.login-page__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.login-page__brand-col {
+  text-align: center;
+}
+
+.login-page__brand-col .login-page__logo-mark {
+  margin: 0 auto 1.25rem;
+}
+
+.login-page__brand-col h2 {
+  margin: 0 0 0.375rem;
+  font-size: 1.625rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.login-page__brand-col p {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.login-page__fields-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-page__error,
+.login-page__success {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.login-page__error {
+  background-color: var(--app-error-container);
+  color: var(--app-on-error-container);
+}
+
+.login-page__success {
+  background-color: var(--app-success-container);
+  color: var(--app-on-success-container);
+}
+
+.login-page__error mat-icon,
+.login-page__success mat-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  font-size: 1.25rem;
+}
+
+.login-page__form {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.login-page__email-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 100px;
+}
+
+.login-page__email-chip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-color: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.login-page__email-chip-icon mat-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  font-size: 1.15rem;
+}
+
+.login-page__email-chip-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--mat-sys-on-surface);
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---- Fila de acciones (link secundario + botón principal, estilo Google) ---- */
+.login-page__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.login-page__link-btn {
+  padding: 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--mat-sys-primary);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.login-page__link-btn:hover {
+  text-decoration: underline;
+}
+
+/* ---- Breakpoints ---- */
+@media (max-width: 420px) {
+  .login-page__actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .login-page__actions button[appButton] {
+    width: 100%;
+  }
+
+  .login-page__link-btn {
+    align-self: center;
+  }
+}
+
+@media (min-width: 640px) {
+  .login-page__card {
+    max-width: 46rem;
+  }
+
+  .login-page__form {
+    padding: 1.75rem 2rem;
+  }
+
+  .login-page__grid {
+    grid-template-columns: 1fr 1.15fr;
+    align-items: center;
+    gap: 3.5rem;
+  }
+
+  .login-page__brand-col {
+    text-align: left;
+  }
+
+  .login-page__brand-col .login-page__logo-mark {
+    margin: 0 0 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .login-page__brand {
+    display: flex;
+  }
+}

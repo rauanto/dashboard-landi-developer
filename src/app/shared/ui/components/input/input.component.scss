@@ -1,0 +1,292 @@
+@use 'sass:map';
+
+$input-colors: (
+  primary: (
+    base: --mat-sys-primary,
+    on: --mat-sys-on-primary,
+    container: --mat-sys-primary-container,
+    on-container: --mat-sys-on-primary-container,
+  ),
+  secondary: (
+    base: --mat-sys-secondary,
+    on: --mat-sys-on-secondary,
+    container: --mat-sys-secondary-container,
+    on-container: --mat-sys-on-secondary-container,
+  ),
+  tertiary: (
+    base: --mat-sys-tertiary,
+    on: --mat-sys-on-tertiary,
+    container: --mat-sys-tertiary-container,
+    on-container: --mat-sys-on-tertiary-container,
+  ),
+  success: (
+    base: --app-success,
+    on: --app-on-success,
+    container: --app-success-container,
+    on-container: --app-on-success-container,
+  ),
+  warning: (
+    base: --app-warning,
+    on: --app-on-warning,
+    container: --app-warning-container,
+    on-container: --app-on-warning-container,
+  ),
+  info: (
+    base: --app-info,
+    on: --app-on-info,
+    container: --app-info-container,
+    on-container: --app-on-info-container,
+  ),
+  error: (
+    base: --app-error,
+    on: --app-on-error,
+    container: --app-error-container,
+    on-container: --app-on-error-container,
+  ),
+);
+
+:host.app-input-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.app-input__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  border-radius: 100px; // pill, igual que AppButtonComponent
+  padding: 0 1rem;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+// Multilínea: el pill completo se ve raro con varias filas -> esquinas grandes
+:host.app-input--multiline .app-input__field {
+  border-radius: 1.25rem;
+  padding: 1rem;
+  align-items: flex-start;
+}
+
+// ---- Tamaños ----
+:host.app-input--xs .app-input__field {
+  min-height: 1.75rem; /* 28px */
+}
+:host.app-input--xs input.app-input__control {
+  padding: 0.25rem 0;
+  font-size: 0.75rem;
+}
+:host.app-input--sm .app-input__field {
+  min-height: 2.25rem; /* 36px */
+}
+:host.app-input--sm input.app-input__control {
+  padding: 0.375rem 0;
+  font-size: 0.8125rem;
+}
+:host.app-input--md .app-input__field {
+  min-height: 2.75rem; /* 44px */
+}
+:host.app-input--md input.app-input__control {
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+}
+:host.app-input--lg .app-input__field {
+  min-height: 3.25rem; /* 52px */
+}
+:host.app-input--lg input.app-input__control {
+  padding: 0.75rem 0;
+  font-size: 0.9375rem;
+}
+
+// ---- Variantes ----
+:host.app-input--outlined .app-input__field {
+  background-color: transparent;
+  border: 1.5px solid var(--mat-sys-outline-variant);
+}
+
+:host.app-input--filled .app-input__field {
+  background-color: var(--mat-sys-surface-container-high);
+  border: 1.5px solid transparent;
+}
+
+// ---- Control nativo ----
+.app-input__control {
+  order: 2;
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+  padding: 0.75rem 0;
+  resize: none;
+
+  &::placeholder {
+    color: var(--mat-sys-on-surface-variant);
+    opacity: 0.7;
+  }
+}
+
+textarea.app-input__control {
+  padding: 0;
+  line-height: 1.4;
+}
+
+// ---- Label flotante (estilo M3) ----
+.app-input__label {
+  order: 1;
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface-variant);
+  pointer-events: none;
+  transition:
+    top 150ms ease,
+    font-size 150ms ease,
+    color 150ms ease;
+  background: transparent;
+
+  &--floating {
+    top: 0;
+    font-size: 0.6875rem;
+    padding: 0 0.25rem;
+    background-color: var(--mat-sys-surface);
+  }
+}
+
+:host.app-input--filled .app-input__label--floating {
+  background-color: var(--mat-sys-surface-container-high);
+}
+
+:host.app-input--multiline .app-input__label {
+  left: 1rem;
+}
+
+:host.app-input--has-icon .app-input__label {
+  left: 2.7rem; // 1rem (padding-left) + 1.2rem (icon width) + 0.5rem (gap)
+}
+
+// ---- Iconos y acciones ----
+.app-input__icon {
+  order: 0;
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.app-input__action {
+  order: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  color: var(--mat-sys-on-surface-variant);
+
+  &:hover {
+    background-color: var(--mat-sys-surface-container-highest);
+  }
+}
+
+// ---- Prefijos y sufijos de texto ----
+.app-input__affix {
+  order: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+
+  &--prefix {
+    order: 0;
+  }
+
+  &--suffix {
+    order: 3;
+    font-size: 0.8125rem;
+    padding-left: 0.25rem;
+  }
+}
+
+// ---- Helper text / contador / footer ----
+.app-input__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  min-height: 1.125rem;
+}
+
+.app-input__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  &--error {
+    color: var(--app-error);
+  }
+
+  &--warning {
+    color: var(--app-warning, #e65100);
+  }
+}
+
+.app-input__counter {
+  font-size: 0.6875rem;
+  color: var(--mat-sys-on-surface-variant);
+  text-align: right;
+  white-space: nowrap;
+  margin-left: auto;
+
+  &--valid {
+    color: var(--app-success, #2e7d32);
+    font-weight: 600;
+  }
+
+  &--warning {
+    color: var(--app-warning, #e65100);
+  }
+}
+
+// ---- Estado disabled ----
+:host.app-input--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+// ---- Estado error (color de borde y label fijo, sin depender del foco) ----
+:host.app-input--error .app-input__field {
+  border-color: var(--app-error);
+}
+:host.app-input--error .app-input__label {
+  color: var(--app-error);
+}
+
+// ---- Anillo de foco por color ----
+@each $name, $tokens in $input-colors {
+  :host.app-input--#{$name}.app-input--focused .app-input__field {
+    border-color: var(#{map.get($tokens, base)});
+    box-shadow: 0 0 0 1px var(#{map.get($tokens, base)});
+  }
+
+  :host.app-input--#{$name}.app-input--focused .app-input__label--floating {
+    color: var(#{map.get($tokens, base)});
+  }
+}

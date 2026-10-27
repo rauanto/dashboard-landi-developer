@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((
+    color: (primary: mat.$azure-palette, tertiary: mat.$violet-palette, theme-type: light),
+    typography: Roboto,
+    density: 0,
+  ));
+  --app-success: #2e7d32; --app-on-success: #fff; --app-success-container: #c8f0cc; --app-on-success-container: #0b3d12;
+  --app-warning: #b26a00; --app-on-warning: #fff; --app-warning-container: #ffe2b8; --app-on-warning-container: #4a2c00;
+  --app-info: #0277bd; --app-on-info: #fff; --app-info-container: #cde9fb; --app-on-info-container: #00344f;
+  --app-error: #ba1a1a; --app-on-error: #fff; --app-error-container: #ffdad6; --app-on-error-container: #410002;
+}
+html.dark {
+  @include mat.theme((
+    color: (primary: mat.$azure-palette, tertiary: mat.$violet-palette, theme-type: dark),
+  ));
+  --app-success: #7fd987; --app-on-success: #00390e; --app-success-container: #1a5324; --app-on-success-container: #c8f0cc;
+  --app-warning: #ffb74d; --app-on-warning: #4a2c00; --app-warning-container: #6b4100; --app-on-warning-container: #ffe2b8;
+  --app-info: #7cc4f5; --app-on-info: #00344f; --app-info-container: #00507a; --app-on-info-container: #cde9fb;
+  --app-error: #ffb4ab; --app-on-error: #690005; --app-error-container: #93000a; --app-on-error-container: #ffdad6;
+}
+html, body { margin: 0; background: var(--mat-sys-surface); color: var(--mat-sys-on-surface); font-family: Roboto, sans-serif; scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }

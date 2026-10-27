@@ -1,0 +1,96 @@
+<div class="filters-container">
+  <h3
+    style="
+      padding: 16px;
+      margin: 0;
+      font-weight: 500;
+      font-size: 16px;
+      color: var(--mat-sys-on-surface);
+      border-bottom: 1px solid var(--mat-sys-outline-variant);
+    "
+  >
+    Filtros de Columnas
+  </h3>
+
+  <mat-accordion displayMode="flat" multi>
+    @for (col of metadata(); track col.name) {
+      <mat-expansion-panel class="filter-panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <div style="display: flex; flex-direction: column">
+              <span>{{ col.name }}</span>
+              <span style="font-size: 11px; color: var(--mat-sys-on-surface-variant); opacity: 0.7">
+                {{ col.is_text ? 'Texto' : col.is_date ? 'Fecha' : 'Número' }}
+              </span>
+            </div>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div style="padding-top: 8px">
+          @if (col.is_text) {
+            <mat-form-field appearance="outline" style="width: 100%">
+              <mat-label>Catálogo</mat-label>
+              <mat-select
+                multiple
+                [ngModel]="getTextFilter(col.name).values"
+                (ngModelChange)="updateText(col.name, $event)"
+              >
+                @for (val of safeUniqueValues().get(col.name); track val) {
+                  <mat-option [value]="val">{{ val || '(Vacío)' }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          } @else if (col.is_numeric) {
+            <div style="display: flex; gap: 8px">
+              <mat-form-field appearance="outline" style="flex: 1">
+                <mat-label>Mínimo</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [placeholder]="col.min_value"
+                  #minNum
+                  [value]="getRangeFilter(col.name).min"
+                  (change)="updateRange(col.name, 'min', minNum.value)"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" style="flex: 1">
+                <mat-label>Máximo</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [placeholder]="col.max_value"
+                  #maxNum
+                  [value]="getRangeFilter(col.name).max"
+                  (change)="updateRange(col.name, 'max', maxNum.value)"
+                />
+              </mat-form-field>
+            </div>
+          } @else if (col.is_date) {
+            <div style="display: flex; gap: 8px">
+              <mat-form-field appearance="outline" style="flex: 1">
+                <mat-label>Desde</mat-label>
+                <input
+                  matInput
+                  type="date"
+                  #minDate
+                  (change)="updateRange(col.name, 'min', minDate.value)"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" style="flex: 1">
+                <mat-label>Hasta</mat-label>
+                <input
+                  matInput
+                  type="date"
+                  #maxDate
+                  (change)="updateRange(col.name, 'max', maxDate.value)"
+                />
+              </mat-form-field>
+            </div>
+          }
+        </div>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</div>

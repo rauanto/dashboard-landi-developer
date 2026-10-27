@@ -1,0 +1,136 @@
+@use 'sass:map';
+
+$colors: (
+  primary: (base: --mat-sys-primary),
+  secondary: (base: --mat-sys-secondary),
+  tertiary: (base: --mat-sys-tertiary),
+  success: (base: --app-success),
+  warning: (base: --app-warning),
+  info: (base: --app-info),
+  error: (base: --app-error),
+);
+
+:host.app-radio-host {
+  display: block;
+  font-family: inherit;
+}
+
+.app-radio {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.app-radio__group-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+}
+:host.app-radio--error .app-radio__group-label {
+  color: var(--app-error);
+}
+
+.app-radio__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  &--horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+}
+
+.app-radio__wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  cursor: pointer;
+  user-select: none;
+
+  &--disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+}
+
+.app-radio__native {
+  position: absolute;
+  opacity: 0;
+  width: var(--_size);
+  height: var(--_size);
+  margin: 0;
+  cursor: inherit;
+}
+
+.app-radio__circle {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--_size);
+  height: var(--_size);
+  border-radius: 50%;
+  border: 2px solid var(--mat-sys-on-surface-variant);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: calc(var(--_size) * 0.5);
+    height: calc(var(--_size) * 0.5);
+    border-radius: 50%;
+    background-color: var(--_c);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 150ms ease;
+  }
+}
+
+.app-radio__native:checked + .app-radio__circle {
+  border-color: var(--_c);
+  &::after {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+.app-radio__native:focus-visible + .app-radio__circle {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--_c) 25%, transparent);
+}
+.app-radio__wrap:hover .app-radio__circle {
+  border-color: var(--_c);
+}
+
+.app-radio__text {
+  display: flex;
+  flex-direction: column;
+}
+.app-radio__label {
+  font-size: 0.9375rem;
+  line-height: var(--_size);
+  color: var(--mat-sys-on-surface);
+}
+.app-radio__description {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.app-radio__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  &--error {
+    color: var(--app-error);
+  }
+}
+
+:host.app-radio--sm { --_size: 1.125rem; }
+:host.app-radio--md { --_size: 1.375rem; }
+:host.app-radio--lg { --_size: 1.625rem; }
+
+@each $name, $tokens in $colors {
+  :host.app-radio--#{$name} {
+    --_c: var(#{map.get($tokens, base)});
+  }
+}

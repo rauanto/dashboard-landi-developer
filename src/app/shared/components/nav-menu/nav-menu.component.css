@@ -1,0 +1,128 @@
+.premium-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 0 !important;
+}
+
+.nav-section-header {
+    margin-top: 16px;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--mat-sys-on-surface-variant);
+    transition: background-color 0.2s ease, border-radius 0.2s ease, opacity 0.2s ease, height 0.2s ease, margin 0.2s ease, padding 0.2s ease;
+    overflow: hidden;
+    opacity: 1;
+    height: 32px;
+}
+
+.nav-section-header.is-hidden {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+}
+
+.nav-section-header.collapsible {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 16px; /* Space for the chevron */
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin-right: 8px; /* Match right padding style of list items */
+}
+
+.nav-section-header.collapsible:hover {
+    background-color: var(--mat-sys-surface-variant);
+    border-radius: 40px;
+    color: var(--mat-sys-on-surface);
+}
+
+.section-chevron {
+    transition: transform 0.2s ease;
+    font-size: 1.25rem;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.section-chevron.rotated {
+    transform: rotate(90deg);
+}
+
+.nav-section-items {
+    animation: fadeIn 0.2s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.nav-collapsed-divider {
+    margin: 6px 10px !important;
+    opacity: 1;
+    transition: opacity 0.2s ease, margin 0.2s ease;
+}
+
+.nav-collapsed-divider.is-hidden {
+    opacity: 0;
+    margin: 0 !important;
+    pointer-events: none;
+    border-color: transparent;
+}
+
+/* Animate standard list items */
+:host ::ng-deep .premium-nav-list .mdc-list-item {
+    transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                margin 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                padding 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                border-radius 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    overflow: hidden;
+    border-radius: 40px !important;
+    width: auto !important;
+    margin: 0 !important;
+}
+
+:host ::ng-deep .premium-nav-list.is-collapsed .mdc-list-item {
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    margin: 2px auto !important;
+    border-radius: 100% !important;
+}
+
+:host ::ng-deep .premium-nav-list.is-collapsed .mdc-list-item__content {
+    padding: 0 !important;
+}
+
+:host ::ng-deep .premium-nav-list.is-collapsed .mdc-list-item__start {
+    margin: 0 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+/* Smooth fade for item labels */
+.nav-item-label {
+    transition: opacity 0.2s ease;
+    opacity: 1;
+    white-space: nowrap;
+}
+
+:host ::ng-deep .premium-nav-list.is-collapsed .nav-item-label {
+    opacity: 0;
+    pointer-events: none;
+}

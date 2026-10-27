@@ -1,0 +1,75 @@
+@use 'sass:map';
+
+$colors: (
+  primary: (base: --mat-sys-primary, on: --mat-sys-on-primary, container: --mat-sys-primary-container, on-container: --mat-sys-on-primary-container),
+  secondary: (base: --mat-sys-secondary, on: --mat-sys-on-secondary, container: --mat-sys-secondary-container, on-container: --mat-sys-on-secondary-container),
+  tertiary: (base: --mat-sys-tertiary, on: --mat-sys-on-tertiary, container: --mat-sys-tertiary-container, on-container: --mat-sys-on-tertiary-container),
+  success: (base: --app-success, on: --app-on-success, container: --app-success-container, on-container: --app-on-success-container),
+  warning: (base: --app-warning, on: --app-on-warning, container: --app-warning-container, on-container: --app-on-warning-container),
+  info: (base: --app-info, on: --app-on-info, container: --app-info-container, on-container: --app-on-info-container),
+  error: (base: --app-error, on: --app-on-error, container: --app-error-container, on-container: --app-on-error-container),
+);
+
+:host.app-slider-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.app-slider__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 1rem;
+}
+.app-slider__label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+}
+.app-slider__value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--_c);
+}
+
+.app-slider__control {
+  width: calc(100% - 1rem);
+  margin: 0 0.5rem;
+}
+
+.app-slider__footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  font-size: 0.6875rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+.app-slider__error {
+  color: var(--app-error);
+  font-size: 0.75rem;
+}
+
+:host.app-slider--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@each $name, $t in $colors {
+  :host.app-slider--#{$name} {
+    --_c: var(#{map.get($t, base)});
+    --mat-slider-active-track-color: var(#{map.get($t, base)});
+    --mat-slider-handle-color: var(#{map.get($t, base)});
+    --mat-slider-focus-handle-color: var(#{map.get($t, base)});
+    --mat-slider-hover-handle-color: var(#{map.get($t, base)});
+    --mat-slider-inactive-track-color: var(#{map.get($t, container)});
+    --mat-slider-with-tick-marks-active-container-color: var(#{map.get($t, on)});
+    --mat-slider-with-overlap-handle-outline-color: var(#{map.get($t, on)});
+    --mat-slider-label-container-color: var(#{map.get($t, base)});
+    --mat-slider-label-label-text-color: var(#{map.get($t, on)});
+    --mat-slider-ripple-color: var(#{map.get($t, base)});
+  }
+}

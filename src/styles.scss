@@ -1,0 +1,218 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use 'app/styles_theme-colors.scss' as custom;
+@use "tailwindcss";
+@include mat.core();
+
+
+@font-face {
+    font-family: "Stack Sans Headline";
+    src: url("./assets/fonts/StackSansHeadline-VariableFont_wght.ttf");
+}
+
+
+$light-theme: mat.define-theme((color: (theme-type: light,
+                primary: custom.$primary-palette,
+                tertiary: custom.$tertiary-palette ),
+            typography: (plain-family: '"Stack Sans Headline", sans-serif',
+                brand-family: '"Stack Sans Headline", sans-serif'
+            ),
+            density: (scale: -1)));
+
+
+$dark-theme: mat.define-theme((color: (theme-type: dark,
+                primary: custom.$primary-palette,
+                tertiary: custom.$tertiary-palette ),
+            typography: (plain-family: '"Stack Sans Headline", sans-serif',
+                brand-family: '"Stack Sans Headline", sans-serif'
+            ),
+            density: (scale: -1)));
+
+// ---------------------------------------------------------------------------
+// Mixin para generar los 4 roles M3 (base, on-base, container, on-container)
+// de un color semántico a partir de su paleta de 15 tonos, para un modo dado.
+// Sigue exactamente la regla de mapeo de tonos de Material 3:
+//   light -> base:40  on-base:100  container:90  on-container:10
+//   dark  -> base:80  on-base:20   container:30  on-container:90
+// ---------------------------------------------------------------------------
+@mixin semantic-color($name, $palette, $mode) {
+    @if $mode ==light {
+        --app-#{$name}: #{map.get($palette, 40)};
+        --app-on-#{$name}: #{map.get($palette, 100)};
+        --app-#{$name}-container: #{map.get($palette, 90)};
+        --app-on-#{$name}-container: #{map.get($palette, 10)};
+        --app-#{$name}-hover: #{map.get($palette, 35)};
+        --app-#{$name}-fixed: #{map.get($palette, 90)};
+    }
+
+    @else {
+        --app-#{$name}: #{map.get($palette, 80)};
+        --app-on-#{$name}: #{map.get($palette, 20)};
+        --app-#{$name}-container: #{map.get($palette, 30)};
+        --app-on-#{$name}-container: #{map.get($palette, 90)};
+        --app-#{$name}-hover: #{map.get($palette, 70)};
+        --app-#{$name}-fixed: #{map.get($palette, 90)};
+    }
+}
+
+html {
+    @include mat.all-component-themes($light-theme);
+    font-family: "Stack Sans Headline", sans-serif;
+    color-scheme: light;
+
+
+    --mat-sys-primary: #{mat.get-theme-color($light-theme, primary)};
+    --mat-sys-on-primary: #{mat.get-theme-color($light-theme, on-primary)};
+    --mat-sys-primary-container: #{mat.get-theme-color($light-theme, primary-container)};
+    --mat-sys-on-primary-container: #{mat.get-theme-color($light-theme, on-primary-container)};
+
+    --mat-sys-tertiary: #{mat.get-theme-color($light-theme, tertiary)};
+    --mat-sys-on-tertiary: #{mat.get-theme-color($light-theme, on-tertiary)};
+    --mat-sys-tertiary-container: #{mat.get-theme-color($light-theme,tertiary-container)};
+    --mat-sys-on-tertiary-container: #{mat.get-theme-color($light-theme,on-tertiary-container)};
+
+
+
+    --mat-sys-secondary: #{mat.get-theme-color($light-theme, secondary)};
+    --mat-sys-on-secondary: #{mat.get-theme-color($light-theme, on-secondary)};
+    --mat-sys-secondary-container: #{mat.get-theme-color($light-theme, secondary-container)};
+    --mat-sys-on-secondary-container: #{mat.get-theme-color($light-theme, on-secondary-container)};
+
+    --mat-sys-surface: #{mat.get-theme-color($light-theme, surface)};
+    --mat-sys-on-surface: #{mat.get-theme-color($light-theme, on-surface)};
+    --mat-sys-surface-variant: #{mat.get-theme-color($light-theme, surface-variant)};
+    --mat-sys-on-surface-variant: #{mat.get-theme-color($light-theme, on-surface-variant)};
+
+    --mat-sys-outline: #{mat.get-theme-color($light-theme, outline)};
+    --mat-sys-outline-variant: #{mat.get-theme-color($light-theme, outline-variant)};
+
+    --mat-sys-background: #{mat.get-theme-color($light-theme, surface)};
+    --mat-sys-error: #{mat.get-theme-color($light-theme, error)};
+    --mat-sys-on-error: #{mat.get-theme-color($light-theme, on-error)};
+    --mat-sys-error-container: #{mat.get-theme-color($light-theme, error-container)};
+    --mat-sys-on-error-container: #{mat.get-theme-color($light-theme, on-error-container)};
+
+    --mat-sys-surface-container: #{mat.get-theme-color($light-theme, surface-container)};
+    --mat-sys-surface-container-high: #{mat.get-theme-color($light-theme, surface-container-high)};
+    --mat-sys-surface-container-highest: #{mat.get-theme-color($light-theme, surface-container-highest)};
+    --mat-sys-surface-container-low: #{mat.get-theme-color($light-theme, surface-container-low)};
+    --mat-sys-surface-container-lowest: #{mat.get-theme-color($light-theme, surface-container-lowest)};
+    --mat-sys-inverse-surface: #{mat.get-theme-color($light-theme, inverse-surface)};
+    --mat-sys-on-inverse-surface: #{mat.get-theme-color($light-theme, inverse-on-surface)};
+
+    // ---- Colores semánticos de ayuda (light) ----
+    @include semantic-color('success', custom.$success-palette, light);
+    @include semantic-color('warning', custom.$warning-palette, light);
+    @include semantic-color('info', custom.$info-palette, light);
+    @include semantic-color('error', custom.$error-palette, light); // alias con nomenclatura --app-* consistente
+}
+
+
+html.dark-mode {
+    @include mat.all-component-themes($dark-theme);
+    color-scheme: dark;
+    font-family: "Stack Sans Headline", sans-serif;
+
+    --mat-sys-primary: #{mat.get-theme-color($dark-theme, primary)};
+    --mat-sys-on-primary: #{mat.get-theme-color($dark-theme, on-primary)};
+    --mat-sys-primary-container: #{mat.get-theme-color($dark-theme, primary-container)};
+    --mat-sys-on-primary-container: #{mat.get-theme-color($dark-theme, on-primary-container)};
+
+    --mat-sys-tertiary: #{mat.get-theme-color($dark-theme, tertiary)};
+    --mat-sys-on-tertiary: #{mat.get-theme-color($dark-theme, on-tertiary)};
+    --mat-sys-tertiary-contain: #{mat.get-theme-color($light-theme,tertiary-container)};
+    --mat-sys-on-tertiary-contain: #{mat.get-theme-color($light-theme,on-tertiary-container)};
+
+    --mat-sys-secondary: #{mat.get-theme-color($dark-theme, secondary)};
+    --mat-sys-on-secondary: #{mat.get-theme-color($dark-theme, on-secondary)};
+    --mat-sys-secondary-container: #{mat.get-theme-color($dark-theme, secondary-container)};
+    --mat-sys-on-secondary-container: #{mat.get-theme-color($dark-theme, on-secondary-container)};
+
+    --mat-sys-surface: #{mat.get-theme-color($dark-theme, surface)};
+    --mat-sys-on-surface: #{mat.get-theme-color($dark-theme, on-surface)};
+    --mat-sys-surface-variant: #{mat.get-theme-color($dark-theme, surface-variant)};
+    --mat-sys-on-surface-variant: #{mat.get-theme-color($dark-theme, on-surface-variant)};
+
+    --mat-sys-outline: #{mat.get-theme-color($dark-theme, outline)};
+    --mat-sys-outline-variant: #{mat.get-theme-color($dark-theme, outline-variant)};
+
+    --mat-sys-background: #{mat.get-theme-color($dark-theme, surface)};
+    --mat-sys-error: #{mat.get-theme-color($dark-theme, error)};
+    --mat-sys-on-error: #{mat.get-theme-color($dark-theme, on-error)};
+    --mat-sys-error-container: #{mat.get-theme-color($dark-theme, error-container)};
+    --mat-sys-on-error-container: #{mat.get-theme-color($dark-theme, on-error-container)};
+
+    --mat-sys-surface-container: #{mat.get-theme-color($dark-theme, surface-container)};
+    --mat-sys-surface-container-high: #{mat.get-theme-color($dark-theme, surface-container-high)};
+    --mat-sys-surface-container-highest: #{mat.get-theme-color($dark-theme, surface-container-highest)};
+    --mat-sys-surface-container-low: #{mat.get-theme-color($dark-theme, surface-container-low)};
+    --mat-sys-surface-container-lowest: #{mat.get-theme-color($dark-theme, surface-container-lowest)};
+    --mat-sys-inverse-surface: #{mat.get-theme-color($dark-theme, inverse-surface)};
+    --mat-sys-on-inverse-surface: #{mat.get-theme-color($dark-theme, inverse-on-surface)};
+
+    // ---- Colores semánticos de ayuda (dark) ----
+    @include semantic-color('success', custom.$success-palette, dark);
+    @include semantic-color('warning', custom.$warning-palette, dark);
+    @include semantic-color('info', custom.$info-palette, dark);
+    @include semantic-color('error', custom.$error-palette, dark);
+}
+
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    --mat-sys-body-medium-line-height: 1.25rem;
+    --mat-sys-body-medium-size: 0.875rem;
+    --mat-sys-body-medium-tracking: 0.016rem;
+    --mat-sys-body-medium-weight: 400;
+    background-color: var(--mat-sys-surface-container-low);
+    color: var(--mat-sys-on-surface);
+}
+
+// ---------------------------------------------------------------------------
+// Utilidades rápidas (opcional) — úsalas junto con clases de Tailwind.
+// Ej: <div class="app-container-success">Pago aprobado</div>
+// ---------------------------------------------------------------------------
+.app-success {
+    background-color: var(--app-success);
+    color: var(--app-on-success);
+}
+
+.app-container-success {
+    background-color: var(--app-success-container);
+    color: var(--app-on-success-container);
+}
+
+.app-warning {
+    background-color: var(--app-warning);
+    color: var(--app-on-warning);
+}
+
+.app-container-warning {
+    background-color: var(--app-warning-container);
+    color: var(--app-on-warning-container);
+}
+
+.app-info {
+    background-color: var(--app-info);
+    color: var(--app-on-info);
+}
+
+.app-container-info {
+    background-color: var(--app-info-container);
+    color: var(--app-on-info-container);
+}
+
+.app-error {
+    background-color: var(--app-error);
+    color: var(--app-on-error);
+}
+
+.app-container-error {
+    background-color: var(--app-error-container);
+    color: var(--app-on-error-container);
+}

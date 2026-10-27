@@ -1,0 +1,46 @@
+:host.app-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.app-form-field__label {
+  padding: 0 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.app-form-field__asterisk {
+  color: var(--app-error);
+}
+
+.app-form-field__footer {
+  padding: 0 1rem;
+  min-height: 1.125rem;
+}
+
+.app-form-field__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  &--error {
+    color: var(--app-error);
+  }
+}
+
+:host.app-form-field--error .app-form-field__label {
+  color: var(--app-error);
+}
+
+:host.app-form-field--disabled {
+  opacity: 0.6;
+}
+
+// El control interno ya no pinta su propio footer vacío
+:host ::ng-deep .app-form-field__control > * {
+  display: block;
+  width: 100%;
+}

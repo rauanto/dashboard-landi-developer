@@ -1,0 +1,105 @@
+<div class="login-page">
+  <div class="login-page__overlay"></div>
+
+  <section class="login-page__brand">
+    <div class="login-page__brand-content">
+      <div class="login-page__logo">
+        <span class="login-page__logo-mark">
+          <img src="assets/svg/icon.svg" alt="" />
+        </span>
+        <span>Dashboard Landi</span>
+      </div>
+
+      <div class="login-page__hero">
+        <h1>Tus reportes y tableros, en un solo lugar</h1>
+        <p>Consulta mapas de calor, genera reportes y gestiona tus datos con claridad.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="login-page__form-panel">
+    <app-card variant="filled" class="login-page__card">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-page__form">
+        <div class="login-page__grid">
+          <div class="login-page__brand-col">
+            <span class="login-page__logo-mark">
+              <img src="assets/svg/icon.svg" alt="" />
+            </span>
+            @if (step() === 'email') {
+              <h2>Iniciar sesión</h2>
+              <p>Usa tu cuenta de Dashboard Landi</p>
+            } @else {
+              <h2>Bienvenido</h2>
+              <p>Ingresa tu contraseña para continuar</p>
+            }
+          </div>
+
+          <div class="login-page__fields-col">
+            @if (justRegistered()) {
+              <div class="login-page__success" role="status">
+                <mat-icon>check_circle</mat-icon>
+                <span>Cuenta creada. Ya puedes iniciar sesión.</span>
+              </div>
+            }
+
+            @if (errorMessage()) {
+              <div class="login-page__error" role="alert">
+                <mat-icon>error_outline</mat-icon>
+                <span>{{ errorMessage() }}</span>
+              </div>
+            }
+
+            @if (step() === 'email') {
+              <app-input
+                label="Correo"
+                type="email"
+                formControlName="email"
+                prefixIcon="mail"
+                [required]="true"
+                [errorMessage]="emailErrorMessage"
+              />
+            } @else {
+              <div class="login-page__email-chip">
+                <span class="login-page__email-chip-icon">
+                  <mat-icon>account_circle</mat-icon>
+                </span>
+                <span class="login-page__email-chip-text">{{ loginForm.controls.email.value }}</span>
+              </div>
+
+              <app-input
+                label="Contraseña"
+                type="password"
+                formControlName="password"
+                prefixIcon="lock"
+                [required]="true"
+                [errorMessage]="passwordErrorMessage"
+              />
+            }
+          </div>
+        </div>
+
+        <div class="login-page__actions">
+          @if (step() === 'password') {
+            <button type="button" class="login-page__link-btn" (click)="goBackToEmail()">
+              Cambiar correo
+            </button>
+          } @else {
+            <a routerLink="/auth/register" class="login-page__link-btn">Crear cuenta</a>
+          }
+
+          <button
+            appButton
+            type="submit"
+            variant="filled"
+            color="primary"
+            size="lg"
+            [loading]="loading()"
+            [disabled]="loading()"
+          >
+            {{ step() === 'email' ? 'Continuar' : 'Iniciar sesión' }}
+          </button>
+        </div>
+      </form>
+    </app-card>
+  </section>
+</div>

@@ -1,0 +1,85 @@
+<div style="margin-bottom: 8px; display: flex; justify-content: flex-end">
+  <button mat-button [matMenuTriggerFor]="columnMenu" color="primary">
+    <mat-icon>view_column</mat-icon> Columnas
+  </button>
+  <mat-menu #columnMenu="matMenu">
+    <div class="p-0" (click)="$event.stopPropagation()">
+      @for (col of columns(); track col) {
+        <mat-checkbox [checked]="isColumnVisible(col)" (change)="toggleColumn(col)">
+          {{ col }}
+        </mat-checkbox>
+        <br />
+      }
+    </div>
+  </mat-menu>
+</div>
+
+<div
+  class="grid-container"
+  (keydown)="onKeyDown($event)"
+  (copy)="onCopy($event)"
+  tabindex="0"
+  role="grid"
+>
+  <div class="grid-scroll-wrapper">
+    <!-- Headers -->
+    <div
+      class="grid-header"
+      [style.grid-template-columns]="gridColumns()"
+      cdkDropList
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="onColumnDrop($event)"
+    >
+      <div class="grid-header-cell index-header" role="columnheader">#</div>
+      @for (col of displayedColumns(); track col) {
+        <div
+          class="grid-header-cell"
+          role="columnheader"
+          cdkDrag
+          style="cursor: grab; display: flex; align-items: center; justify-content: space-between"
+          (click)="sortBy(col)"
+        >
+          {{ col }}
+          @if (sortColumn() === col) {
+            <mat-icon style="font-size: 16px; width: 16px; height: 16px">
+              {{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+            </mat-icon>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Virtual Scroll Viewport for Data Rows -->
+    <cdk-virtual-scroll-viewport itemSize="36" class="viewport">
+      <div
+        *cdkVirtualFor="let row of sortedData(); let rowIndex = index"
+        class="grid-row"
+        [style.grid-template-columns]="gridColumns()"
+      >
+        <div
+          class="grid-cell index-cell"
+          (mousedown)="startRowDrag(rowIndex, $event)"
+          (mouseenter)="onRowMouseEnter(rowIndex)"
+          role="gridcell"
+        >
+          {{ rowIndex + 1 }}
+        </div>
+        @for (col of displayedColumns(); track col; let colIndex = $index) {
+          <div
+            class="grid-cell"
+            [class.selected]="selectionService.isSelected(rowIndex, colIndex)"
+            [class.active]="selectionService.isActive(rowIndex, colIndex)"
+            [class.has-heatmap]="heatmapService.getColor(col, row[col]) !== ''"
+            [style.--heatmap-bg]="heatmapService.getColor(col, row[col])"
+            (mousedown)="onMouseDown(rowIndex, colIndex, $event)"
+            (mouseenter)="onMouseEnter(rowIndex, colIndex)"
+            [title]="row[col]"
+            role="gridcell"
+          >
+            {{ row[col] }}
+          </div>
+        }
+      </div>
+    </cdk-virtual-scroll-viewport>
+  </div>
+</div>

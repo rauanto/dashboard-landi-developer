@@ -1,0 +1,34 @@
+<mat-nav-list class="premium-nav-list" [class.is-collapsed]="!sidenavService.isExpanded()">
+  @for (section of sections(); track section.title) {
+    @if (section.title) {
+      <div class="nav-section-header" 
+           [class.is-hidden]="!sidenavService.isExpanded()"
+           [class.collapsible]="section.collapsible" 
+           (click)="toggleSection(section)">
+        <span class="header-text">{{ section.title }}</span>
+        @if (section.collapsible) {
+          <mat-icon class="section-chevron" [class.rotated]="section.expanded">chevron_right</mat-icon>
+        }
+      </div>
+      <mat-divider class="nav-collapsed-divider" [class.is-hidden]="sidenavService.isExpanded()"></mat-divider>
+    }
+
+    <!-- Hide items if section is collapsible and NOT expanded (only applies when sidenav is fully expanded) -->
+    @if (!section.collapsible || section.expanded || !sidenavService.isExpanded()) {
+      <div class="nav-section-items">
+        @for (item of section.items; track item.path) {
+          <a
+            mat-list-item
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            [matTooltip]="!sidenavService.isExpanded() ? item.label : ''"
+            matTooltipPosition="right"
+          >
+            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+            <span matListItemTitle class="nav-item-label">{{ item.label }}</span>
+          </a>
+        }
+      </div>
+    }
+  }
+</mat-nav-list>

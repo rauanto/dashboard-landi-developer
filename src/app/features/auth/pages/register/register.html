@@ -1,0 +1,87 @@
+<div class="login-page">
+  <div class="login-page__overlay"></div>
+
+  <section class="login-page__brand">
+    <div class="login-page__brand-content">
+      <div class="login-page__logo">
+        <span class="login-page__logo-mark">
+          <img src="assets/svg/icon.svg" alt="" />
+        </span>
+        <span>Dashboard Landi</span>
+      </div>
+
+      <div class="login-page__hero">
+        <h1>Crea tu cuenta y empieza a construir tus reportes</h1>
+        <p>Sube tus datos, genera mapas de calor y comparte reportes en minutos.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="login-page__form-panel">
+    <app-card variant="filled" class="login-page__card">
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="login-page__form">
+        <div class="login-page__grid">
+          <div class="login-page__brand-col">
+            <span class="login-page__logo-mark">
+              <img src="assets/svg/icon.svg" alt="" />
+            </span>
+            <h2>Crear cuenta</h2>
+            <p>Regístrate con tu correo para continuar</p>
+          </div>
+
+          <div class="login-page__fields-col">
+            @if (errorMessage()) {
+              <div class="login-page__error" role="alert">
+                <mat-icon>error_outline</mat-icon>
+                <span>{{ errorMessage() }}</span>
+              </div>
+            }
+
+            <app-input
+              label="Correo"
+              type="email"
+              formControlName="email"
+              prefixIcon="mail"
+              [required]="true"
+              [errorMessage]="emailErrorMessage"
+            />
+
+            <app-input
+              label="Contraseña"
+              type="password"
+              formControlName="password"
+              prefixIcon="lock"
+              [required]="true"
+              [errorMessage]="passwordErrorMessage"
+            />
+
+            <app-input
+              label="Confirmar contraseña"
+              type="password"
+              formControlName="confirmPassword"
+              prefixIcon="lock"
+              [required]="true"
+              [errorMessage]="confirmPasswordErrorMessage"
+            />
+          </div>
+        </div>
+
+        <div class="login-page__actions">
+          <a routerLink="/auth/login" class="login-page__link-btn">Ya tengo cuenta</a>
+
+          <button
+            appButton
+            type="submit"
+            variant="filled"
+            color="primary"
+            size="lg"
+            [loading]="loading()"
+            [disabled]="loading()"
+          >
+            Crear cuenta
+          </button>
+        </div>
+      </form>
+    </app-card>
+  </section>
+</div>

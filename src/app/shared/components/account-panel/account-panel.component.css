@@ -1,0 +1,63 @@
+.account-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1.75rem 1.75rem;
+  text-align: center;
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+.account-panel__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.account-panel__header {
+  margin-bottom: 1.25rem;
+}
+
+.account-panel__email {
+  font-size: 0.8125rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.account-panel__avatar {
+  margin-bottom: 1rem;
+}
+
+.account-panel__greeting {
+  margin: 0 0 1rem;
+  font-size: 1.375rem;
+  font-weight: 600;
+  color: var(--mat-sys-on-surface);
+}
+
+.account-panel__badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.account-panel__divider {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.account-panel__logout {
+  width: 100%;
+}
+
+/* El contenedor del diálogo vive fuera de este componente (cdk-overlay), así
+   que hace falta ::ng-deep + panelClass para quitarle el padding por defecto
+   y dejar que .account-panel controle todo el layout. */
+::ng-deep .account-panel-dialog .mdc-dialog__surface {
+  padding: 0;
+  border-radius: 1.25rem;
+  overflow: hidden;
+}

@@ -1,0 +1,61 @@
+<app-dashboard-layout class="container-color">
+  <div sidenav-header>
+    
+  </div>
+
+  <span toolbar-title class="toolbar-page-title">
+    {{ pageTitle }}
+  </span>
+
+  <div sidenav-nav>
+    <app-nav-menu [sections]="navSections"></app-nav-menu>
+  </div>
+
+  <div sidenav-footer>
+    <app-profile-card [user]="user"></app-profile-card>
+  </div>
+
+  <div toolbar-actions class="toolbar-actions-container">
+    <app-dark-btn></app-dark-btn>
+    <button mat-icon-button>
+      <mat-icon>notifications</mat-icon>
+    </button>
+  </div>
+
+  <div class="dashboard-demo-content">
+    <mat-sidenav-container class="analista-sidenav-container" [hasBackdrop]="analistaSidenavService.isOpen()">
+      <mat-sidenav
+        #sidenav
+        position="end"
+        [opened]="analistaSidenavService.isOpen()"
+        (closed)="analistaSidenavService.close()"
+        mode="over"
+        fixedInViewport="true"
+        fixedTopGap="0"
+        fixedBottomGap="0"
+        class="prospecto-sidenav"
+        style="z-index: 1000"
+      >
+      </mat-sidenav>
+
+      <mat-sidenav
+        #globalLeftSidenav
+        position="start"
+        [opened]="globalSidenav.isOpen()"
+        (closed)="globalSidenav.close()"
+        mode="side"
+        class="global-left-sidenav"
+        style="width: 320px; background: var(--mat-sys-surface); border-right: 1px solid var(--mat-sys-outline-variant);"
+      >
+        <ng-template [cdkPortalOutlet]="globalSidenav.portalContent()"></ng-template>
+      </mat-sidenav>
+
+      <mat-sidenav-content>
+        <div class="content-padding">
+          <router-outlet></router-outlet>
+        </div>
+        <app-footer></app-footer>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+</app-dashboard-layout>

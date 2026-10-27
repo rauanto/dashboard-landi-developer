@@ -1,0 +1,181 @@
+@use 'sass:map';
+
+$colors: (
+  primary: (base: --mat-sys-primary),
+  secondary: (base: --mat-sys-secondary),
+  tertiary: (base: --mat-sys-tertiary),
+  success: (base: --app-success),
+  warning: (base: --app-warning),
+  info: (base: --app-info),
+  error: (base: --app-error),
+);
+
+:host.app-datepicker-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.app-datepicker__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  border-radius: 100px;
+  padding: 0 0.5rem 0 1rem;
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+:host.app-datepicker--xs .app-datepicker__field { min-height: 1.75rem; }
+:host.app-datepicker--sm .app-datepicker__field { min-height: 2.25rem; }
+:host.app-datepicker--md .app-datepicker__field { min-height: 2.75rem; }
+:host.app-datepicker--lg .app-datepicker__field { min-height: 3.25rem; }
+
+:host.app-datepicker--outlined .app-datepicker__field {
+  background-color: transparent;
+  border: 1.5px solid var(--mat-sys-outline-variant);
+}
+:host.app-datepicker--filled .app-datepicker__field {
+  background-color: var(--mat-sys-surface-container-high);
+  border: 1.5px solid transparent;
+}
+
+// ---- Control nativo ----
+.app-datepicker__control {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+  padding: 0.75rem 0;
+
+  &::placeholder {
+    color: var(--mat-sys-on-surface-variant);
+    opacity: 0.7;
+  }
+}
+
+// ---- Rango: aplanamos el contenedor de Material ----
+.app-datepicker__range {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 0;
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+
+  ::ng-deep .mat-date-range-input-container {
+    align-items: center;
+  }
+  ::ng-deep .mat-date-range-input-inner {
+    font: inherit;
+    color: inherit;
+
+    &::placeholder {
+      color: var(--mat-sys-on-surface-variant);
+      opacity: 0.7;
+    }
+  }
+  ::ng-deep .mat-date-range-input-separator {
+    color: var(--mat-sys-on-surface-variant);
+    margin: 0 0.5rem;
+  }
+}
+
+// ---- Label flotante ----
+.app-datepicker__label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface-variant);
+  pointer-events: none;
+  transition:
+    top 150ms ease,
+    font-size 150ms ease,
+    color 150ms ease;
+
+  &--floating {
+    top: 0;
+    font-size: 0.6875rem;
+    padding: 0 0.25rem;
+    background-color: var(--mat-sys-surface);
+  }
+}
+:host.app-datepicker--filled .app-datepicker__label--floating {
+  background-color: var(--mat-sys-surface-container-high);
+}
+
+// ---- Acciones ----
+.app-datepicker__icon {
+  font-size: 1.2rem;
+  height: 1.2rem;
+  width: 1.2rem;
+  color: var(--mat-sys-on-surface-variant);
+}
+.app-datepicker__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+
+  &:hover {
+    background-color: var(--mat-sys-surface-container-highest);
+  }
+}
+.app-datepicker__toggle {
+  flex-shrink: 0;
+  --mat-icon-button-state-layer-size: 2rem;
+  --mat-icon-button-icon-size: 1.2rem;
+  --mat-datepicker-toggle-icon-color: var(--mat-sys-on-surface-variant);
+}
+
+// ---- Footer ----
+.app-datepicker__footer {
+  padding: 0 1rem;
+  min-height: 1.125rem;
+}
+.app-datepicker__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  &--error {
+    color: var(--app-error);
+  }
+}
+
+:host.app-datepicker--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+:host.app-datepicker--error .app-datepicker__field {
+  border-color: var(--app-error);
+}
+:host.app-datepicker--error .app-datepicker__label {
+  color: var(--app-error);
+}
+
+@each $name, $tokens in $colors {
+  :host.app-datepicker--#{$name}.app-datepicker--focused .app-datepicker__field {
+    border-color: var(#{map.get($tokens, base)});
+    box-shadow: 0 0 0 1px var(#{map.get($tokens, base)});
+  }
+  :host.app-datepicker--#{$name}.app-datepicker--focused .app-datepicker__label--floating {
+    color: var(#{map.get($tokens, base)});
+  }
+}

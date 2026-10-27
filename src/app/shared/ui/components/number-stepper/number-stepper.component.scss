@@ -1,0 +1,133 @@
+@use 'sass:map';
+
+$colors: (
+  primary: (base: --mat-sys-primary, on: --mat-sys-on-primary, container: --mat-sys-primary-container, on-container: --mat-sys-on-primary-container),
+  secondary: (base: --mat-sys-secondary, on: --mat-sys-on-secondary, container: --mat-sys-secondary-container, on-container: --mat-sys-on-secondary-container),
+  tertiary: (base: --mat-sys-tertiary, on: --mat-sys-on-tertiary, container: --mat-sys-tertiary-container, on-container: --mat-sys-on-tertiary-container),
+  success: (base: --app-success, on: --app-on-success, container: --app-success-container, on-container: --app-on-success-container),
+  warning: (base: --app-warning, on: --app-on-warning, container: --app-warning-container, on-container: --app-on-warning-container),
+  info: (base: --app-info, on: --app-on-info, container: --app-info-container, on-container: --app-on-info-container),
+  error: (base: --app-error, on: --app-on-error, container: --app-error-container, on-container: --app-on-error-container),
+);
+
+:host.app-num-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 100%;
+  font-family: inherit;
+}
+
+.app-num__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: var(--_h);
+  border-radius: 100px;
+  border: 1.5px solid var(--mat-sys-outline-variant);
+  padding: 0 0.25rem;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.app-num__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: calc(var(--_h) - 0.75rem);
+  height: calc(var(--_h) - 0.75rem);
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--_c);
+  cursor: pointer;
+
+  mat-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 1.25rem;
+  }
+  &:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--_c) 12%, transparent);
+  }
+  &:disabled {
+    color: var(--mat-sys-on-surface-variant);
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.app-num__center {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+.app-num__input {
+  width: 100%;
+  min-width: 2rem;
+  border: none;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface);
+}
+.app-num__suffix {
+  font-size: 0.8125rem;
+  color: var(--mat-sys-on-surface-variant);
+  white-space: nowrap;
+}
+
+.app-num__label {
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  transform: translateY(-50%);
+  padding: 0 0.25rem;
+  font-size: 0.6875rem;
+  color: var(--mat-sys-on-surface-variant);
+  background-color: var(--mat-sys-surface);
+  pointer-events: none;
+}
+
+.app-num__footer {
+  padding: 0 1rem;
+  min-height: 1.125rem;
+}
+.app-num__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+  &--error { color: var(--app-error); }
+}
+
+:host.app-num--sm { --_h: 2.25rem; }
+:host.app-num--md { --_h: 2.75rem; }
+:host.app-num--lg { --_h: 3.25rem; }
+
+:host.app-num--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+:host.app-num--error .app-num__field { border-color: var(--app-error); }
+:host.app-num--error .app-num__label { color: var(--app-error); }
+
+@each $name, $t in $colors {
+  :host.app-num--#{$name} {
+    --_c: var(#{map.get($t, base)});
+  }
+  :host.app-num--#{$name}.app-num--focused .app-num__field {
+    border-color: var(#{map.get($t, base)});
+    box-shadow: 0 0 0 1px var(#{map.get($t, base)});
+  }
+  :host.app-num--#{$name}.app-num--focused .app-num__label {
+    color: var(#{map.get($t, base)});
+  }
+}

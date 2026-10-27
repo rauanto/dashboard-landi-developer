@@ -1,0 +1,180 @@
+@use 'sass:map';
+
+// Mapa de color -> variables CSS. primary/secondary/tertiary usan los tokens
+// que genera Angular Material (--mat-sys-*). success/warning/info/error usan
+// los tokens custom (--app-*) definidos en styles.scss.
+$button-colors: (
+  primary: (
+    base: --mat-sys-primary,
+    on: --mat-sys-on-primary,
+    container: --mat-sys-primary-container,
+    on-container: --mat-sys-on-primary-container,
+  ),
+  secondary: (
+    base: --mat-sys-secondary,
+    on: --mat-sys-on-secondary,
+    container: --mat-sys-secondary-container,
+    on-container: --mat-sys-on-secondary-container,
+  ),
+  tertiary: (
+    base: --mat-sys-tertiary,
+    on: --mat-sys-on-tertiary,
+    container: --mat-sys-tertiary-container,
+    on-container: --mat-sys-on-tertiary-container,
+  ),
+  success: (
+    base: --app-success,
+    on: --app-on-success,
+    container: --app-success-container,
+    on-container: --app-on-success-container,
+  ),
+  warning: (
+    base: --app-warning,
+    on: --app-on-warning,
+    container: --app-warning-container,
+    on-container: --app-on-warning-container,
+  ),
+  info: (
+    base: --app-info,
+    on: --app-on-info,
+    container: --app-info-container,
+    on-container: --app-on-info-container,
+  ),
+  error: (
+    base: --app-error,
+    on: --app-on-error,
+    container: --app-error-container,
+    on-container: --app-on-error-container,
+  ),
+);
+
+:host.app-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  border: none;
+  border-radius: 100px; // pill, estilo M3
+  font-family: inherit;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  outline: none;
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    opacity 150ms ease,
+    filter 150ms ease;
+
+  // Tamaños
+
+  &.app-button--xs {
+    min-height: 1.5rem;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+  }
+
+  &.app-button--sm {
+    min-height: 2rem;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+  }
+  &.app-button--md {
+    min-height: 2.5rem;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.875rem;
+  }
+  &.app-button--lg {
+    min-height: 3rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  // Anillo de foco SOLO para navegación por teclado (clase que pone FocusMonitor)
+  &.cdk-keyboard-focused {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--mat-sys-primary) 35%, transparent);
+  }
+
+  &.app-button--disabled {
+    cursor: not-allowed;
+    opacity: 0.38;
+    pointer-events: none;
+  }
+}
+
+@each $name, $tokens in $button-colors {
+  :host.app-button--#{$name} {
+    &.app-button--filled {
+      background-color: var(#{map.get($tokens, base)});
+      color: var(#{map.get($tokens, on)});
+
+      &:hover:not(.app-button--disabled) {
+        filter: brightness(0.94);
+      }
+    }
+
+    &.app-button--tonal {
+      background-color: var(#{map.get($tokens, container)});
+      color: var(#{map.get($tokens, on-container)});
+
+      &:hover:not(.app-button--disabled) {
+        filter: brightness(0.97);
+      }
+    }
+
+    &.app-button--outlined {
+      background-color: transparent;
+      color: var(#{map.get($tokens, base)});
+      border: 1px solid var(--mat-sys-outline-variant);
+
+      &:hover:not(.app-button--disabled) {
+        background-color: var(#{map.get($tokens, container)});
+      }
+    }
+
+    &.app-button--text {
+      background-color: transparent;
+      color: var(#{map.get($tokens, base)});
+
+      &:hover:not(.app-button--disabled) {
+        background-color: var(#{map.get($tokens, container)});
+      }
+    }
+
+    &.app-button--elevated {
+      background-color: var(--mat-sys-surface-container-low);
+      color: var(#{map.get($tokens, base)});
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.15),
+        0 1px 3px rgba(0, 0, 0, 0.1);
+
+      &:hover:not(.app-button--disabled) {
+        box-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.18),
+          0 1px 3px rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+}
+
+.app-button__label {
+  display: inline-flex;
+  align-items: center;
+
+  &--hidden {
+    visibility: hidden;
+  }
+}
+
+.app-button__spinner {
+  position: absolute;
+}
+
+.app-button__icon {
+  font-size: 1.1em;
+  height: 1.1em;
+  width: 1.1em;
+}

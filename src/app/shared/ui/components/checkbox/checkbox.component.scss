@@ -1,0 +1,111 @@
+@use 'sass:map';
+
+$colors: (
+  primary: (base: --mat-sys-primary, on: --mat-sys-on-primary),
+  secondary: (base: --mat-sys-secondary, on: --mat-sys-on-secondary),
+  tertiary: (base: --mat-sys-tertiary, on: --mat-sys-on-tertiary),
+  success: (base: --app-success, on: --app-on-success),
+  warning: (base: --app-warning, on: --app-on-warning),
+  info: (base: --app-info, on: --app-on-info),
+  error: (base: --app-error, on: --app-on-error),
+);
+
+:host.app-checkbox-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: inherit;
+  width: fit-content;
+}
+
+.app-checkbox__wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.app-checkbox__native {
+  position: absolute;
+  opacity: 0;
+  width: var(--_box);
+  height: var(--_box);
+  margin: 0;
+  cursor: inherit;
+}
+
+.app-checkbox__box {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: var(--_box);
+  height: var(--_box);
+  border-radius: 0.3125rem;
+  border: 2px solid var(--mat-sys-on-surface-variant);
+  background-color: transparent;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.app-checkbox__icon {
+  width: calc(var(--_box) - 0.25rem);
+  height: calc(var(--_box) - 0.25rem);
+  font-size: calc(var(--_box) - 0.25rem);
+  color: transparent;
+  transform: scale(0.5);
+  transition:
+    transform 150ms ease,
+    color 150ms ease;
+}
+
+.app-checkbox__label {
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+}
+
+.app-checkbox__native:focus-visible + .app-checkbox__box {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--_c) 25%, transparent);
+}
+
+:host.app-checkbox--checked .app-checkbox__box {
+  background-color: var(--_c);
+  border-color: var(--_c);
+}
+:host.app-checkbox--checked .app-checkbox__icon {
+  color: var(--_on);
+  transform: scale(1);
+}
+
+.app-checkbox__wrap:hover .app-checkbox__box {
+  border-color: var(--_c);
+}
+
+.app-checkbox__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+  padding-left: calc(var(--_box) + 0.625rem);
+
+  &--error {
+    color: var(--app-error);
+  }
+}
+
+:host.app-checkbox--sm { --_box: 1.125rem; }
+:host.app-checkbox--md { --_box: 1.375rem; }
+:host.app-checkbox--lg { --_box: 1.625rem; }
+
+:host.app-checkbox--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@each $name, $tokens in $colors {
+  :host.app-checkbox--#{$name} {
+    --_c: var(#{map.get($tokens, base)});
+    --_on: var(#{map.get($tokens, on)});
+  }
+}

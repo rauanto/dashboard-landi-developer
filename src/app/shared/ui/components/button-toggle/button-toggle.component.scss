@@ -1,0 +1,116 @@
+@use 'sass:map';
+
+$colors: (
+  primary: (base: --mat-sys-primary, on: --mat-sys-on-primary, container: --mat-sys-primary-container, on-container: --mat-sys-on-primary-container),
+  secondary: (base: --mat-sys-secondary, on: --mat-sys-on-secondary, container: --mat-sys-secondary-container, on-container: --mat-sys-on-secondary-container),
+  tertiary: (base: --mat-sys-tertiary, on: --mat-sys-on-tertiary, container: --mat-sys-tertiary-container, on-container: --mat-sys-on-tertiary-container),
+  success: (base: --app-success, on: --app-on-success, container: --app-success-container, on-container: --app-on-success-container),
+  warning: (base: --app-warning, on: --app-on-warning, container: --app-warning-container, on-container: --app-on-warning-container),
+  info: (base: --app-info, on: --app-on-info, container: --app-info-container, on-container: --app-on-info-container),
+  error: (base: --app-error, on: --app-on-error, container: --app-error-container, on-container: --app-on-error-container),
+);
+
+:host.app-toggle-group-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  width: fit-content;
+  max-width: 100%;
+  font-family: inherit;
+}
+:host.app-toggle-group--full {
+  width: 100%;
+}
+
+.app-toggle-group__label {
+  padding: 0 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--mat-sys-on-surface-variant);
+}
+:host.app-toggle-group--error .app-toggle-group__label {
+  color: var(--app-error);
+}
+
+.app-toggle-group {
+  display: inline-flex;
+  width: 100%;
+  border: 1.5px solid var(--mat-sys-outline);
+  border-radius: 100px;
+  overflow: hidden;
+}
+:host.app-toggle-group--error .app-toggle-group {
+  border-color: var(--app-error);
+}
+
+.app-toggle-group__btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0 1rem;
+  height: var(--_h);
+  border: none;
+  border-left: 1.5px solid var(--mat-sys-outline);
+  background: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--mat-sys-on-surface);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+
+  &:first-child {
+    border-left: none;
+  }
+  &:hover:not(:disabled) {
+    background-color: color-mix(in srgb, var(--mat-sys-on-surface) 8%, transparent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--_c);
+    outline-offset: -2px;
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  &--selected {
+    background-color: var(--_container);
+    color: var(--_on-container);
+  }
+}
+:host.app-toggle-group--error .app-toggle-group__btn {
+  border-left-color: var(--app-error);
+}
+
+.app-toggle-group__icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  font-size: 1.125rem;
+}
+
+.app-toggle-group__helper {
+  padding: 0 1rem;
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+  &--error { color: var(--app-error); }
+}
+
+:host.app-toggle-group--sm { --_h: 2rem; }
+:host.app-toggle-group--md { --_h: 2.5rem; }
+:host.app-toggle-group--lg { --_h: 3rem; }
+
+:host.app-toggle-group--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@each $name, $t in $colors {
+  :host.app-toggle-group--#{$name} {
+    --_c: var(#{map.get($t, base)});
+    --_container: var(#{map.get($t, container)});
+    --_on-container: var(#{map.get($t, on-container)});
+  }
+}

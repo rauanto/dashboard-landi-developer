@@ -1,0 +1,189 @@
+// Generado con paleta financiera centrada en primary: #3186FF
+// Secondary: Slate azul-gris · Tertiary: Verde esmeralda · Neutrals: Gris frío
+// + Colores semánticos de ayuda: warning (ámbar), info (celeste), success (alias de tertiary)
+
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+$_palettes: (
+primary: (
+0:   #000000,
+10:  #001849,
+20:  #002E82,
+25:  #003A9E,
+30:  #0045BA,
+35:  #1A60D0,
+40:  #3186FF,
+50:  #5B9AFF,
+60:  #82AFFF,
+70:  #A8C5FF,
+80:  #CDDAFF,
+90:  #E5ECFF,
+95:  #F2F6FF,
+98:  #F9FAFF,
+99:  #FDFCFF,
+100: #FFFFFF,
+  ),
+secondary: (
+// Azul-gris slate: profesional, elegante, muy usado en banca
+0:   #000000,
+10:  #0F1C2E,
+20:  #1E3048,
+25:  #273A55,
+30:  #324562,
+35:  #3D5170,
+40:  #485D7D,
+50:  #617697,
+60:  #7B90B2,
+70:  #97ABCD,
+80:  #B3C7E8,
+90:  #D5E2F5,
+95:  #EAF0FA,
+98:  #F5F8FD,
+99:  #FAFCFF,
+100: #FFFFFF,
+  ),
+tertiary: (
+// Verde esmeralda: crecimiento, dinero, indicadores positivos
+// También sirve como base para el color semántico "success"
+0:   #000000,
+10:  #002117,
+20:  #003826,
+25:  #00442F,
+30:  #005038,
+35:  #006444,
+40:  #007D52,
+50:  #009867,
+60:  #1DB47D,
+70:  #52CF9A,
+80:  #85E8B8,
+90:  #C0F4DA,
+95:  #E1FAF0,
+98:  #F2FEF8,
+99:  #F9FFF9,
+100: #FFFFFF,
+  ),
+neutral: (
+// Tonos oscuros suavizados para evitar la fatiga visual
+0:   #0D0F13,
+4:   #121418,
+6:   #16181D,
+10:  #191B1F,
+12:  #1D1F24,
+17:  #232528,
+20:  #272A2E,
+22:  #2A2C31,
+24:  #2D2F34,
+25:  #2F3136,
+30:  #34363A,
+35:  #3D3F44,
+40:  #4F5157,
+50:  #707279,
+60:  #A0A2A9,
+70:  #C8CAD0,
+80:  #E0E2E8,
+87:  #DCDDE3,
+90:  #F1F2F6,
+92:  #EEEFF3,
+94:  #F2F3F7,
+95:  #F7F8FC,
+96:  #F6F7FA,
+98:  #FBFCFF,
+99:  #FEFEFF,
+100: #FFFFFF,
+  ),
+neutral-variant: (
+// Base elevada sutilmente para bordes y fondos secundarios
+0:   #12141A,
+10:  #1B1D26,
+20:  #2A2D36,
+25:  #31343E,
+30:  #383B44,
+35:  #43464F,
+40:  #50535C,
+50:  #6E7179,
+60:  #9EA1A9,
+70:  #CDD0D9,
+80:  #E2E4EB,
+90:  #F2F3F9,
+95:  #F8F9FC,
+98:  #FCFCFE,
+99:  #FEFEFF,
+100: #FFFFFF,
+  ),
+error: (
+0:   #000000,
+10:  #410002,
+20:  #690005,
+25:  #7e0007,
+30:  #93000a,
+35:  #a80710,
+40:  #b81c1b,
+50:  #db3632,
+60:  #ff5449,
+70:  #ff897d,
+80:  #ffb4ab,
+90:  #ffdad6,
+95:  #ffedea,
+98:  #fff8f7,
+99:  #fffbff,
+100: #FFFFFF,
+  ),
+// -------- COLORES DE AYUDA NUEVOS --------
+warning: (
+// Ámbar/naranja: alertas, pendientes, revisiones necesarias
+0:   #000000,
+10:  #2A1800,
+20:  #452B00,
+25:  #513300,
+30:  #5E3C00,
+35:  #6B4600,
+40:  #7A5100,
+50:  #966600,
+60:  #B48012,
+70:  #D19C3C,
+80:  #EEB868,
+90:  #FFDDB3,
+95:  #FFEEDA,
+98:  #FFF8F0,
+99:  #FFFBFF,
+100: #FFFFFF,
+  ),
+info: (
+// Celeste: información neutral, ayuda, notificaciones no críticas
+0:   #000000,
+10:  #001E31,
+20:  #003353,
+25:  #003D63,
+30:  #004873,
+35:  #005384,
+40:  #005E95,
+50:  #1D7DB8,
+60:  #4C9AD1,
+70:  #74B7E8,
+80:  #A0D3FF,
+90:  #CFE7FF,
+95:  #E7F3FF,
+98:  #F7FBFF,
+99:  #FCFDFF,
+100: #FFFFFF,
+  ),
+);
+
+$_rest: (
+secondary:        map.get($_palettes, secondary),
+neutral:          map.get($_palettes, neutral),
+neutral-variant:  map.get($_palettes, neutral-variant),
+error:            map.get($_palettes, error),
+);
+
+// Paletas completas para mat.define-theme() (primary y tertiary siguen igual)
+$primary-palette:   map.merge(map.get($_palettes, primary),   $_rest);
+$tertiary-palette:  map.merge(map.get($_palettes, tertiary),  $_rest);
+
+// Paletas "crudas" (solo los 15 tonos, sin merge) para los colores semánticos.
+// No necesitan pasar por mat.define-theme(): se leen directo por tono.
+$warning-palette: map.get($_palettes, warning);
+$info-palette:    map.get($_palettes, info);
+$success-palette: map.get($_palettes, tertiary); // el verde esmeralda hace doble función como "success"
+$error-palette:   map.get($_palettes, error);

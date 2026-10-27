@@ -1,0 +1,121 @@
+@use 'sass:map';
+
+$colors: (
+  primary: (base: --mat-sys-primary, on: --mat-sys-on-primary),
+  secondary: (base: --mat-sys-secondary, on: --mat-sys-on-secondary),
+  tertiary: (base: --mat-sys-tertiary, on: --mat-sys-on-tertiary),
+  success: (base: --app-success, on: --app-on-success),
+  warning: (base: --app-warning, on: --app-on-warning),
+  info: (base: --app-info, on: --app-on-info),
+  error: (base: --app-error, on: --app-on-error),
+);
+
+:host.app-toggle-host {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-family: inherit;
+  width: fit-content;
+}
+
+.app-toggle__wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+
+  &--before {
+    flex-direction: row-reverse;
+  }
+  &:focus-visible .app-toggle__track {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--_c) 25%, transparent);
+  }
+}
+
+.app-toggle__track {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--_w);
+  height: var(--_h);
+  border-radius: 100px;
+  border: 2px solid var(--mat-sys-outline);
+  background-color: var(--mat-sys-surface-container-highest);
+  box-sizing: border-box;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.app-toggle__thumb {
+  --_ts: calc(var(--_h) * 0.4);
+  position: absolute;
+  top: 50%;
+  left: calc((var(--_h) - var(--_ts)) / 2 - 2px);
+  display: grid;
+  place-items: center;
+  width: var(--_ts);
+  height: var(--_ts);
+  border-radius: 50%;
+  background-color: var(--mat-sys-outline);
+  transform: translateY(-50%);
+  transition:
+    left 150ms ease,
+    width 150ms ease,
+    height 150ms ease,
+    background-color 150ms ease;
+}
+
+.app-toggle__icon {
+  width: 70%;
+  height: 70%;
+  font-size: calc(var(--_h) * 0.45);
+  color: var(--_c);
+}
+
+.app-toggle__label {
+  font-size: 0.9375rem;
+  color: var(--mat-sys-on-surface);
+}
+
+:host.app-toggle--checked {
+  .app-toggle__track {
+    background-color: var(--_c);
+    border-color: var(--_c);
+  }
+  .app-toggle__thumb {
+    --_ts: calc(var(--_h) * 0.65);
+    left: calc(var(--_w) - var(--_ts) - (var(--_h) - var(--_ts)) / 2 - 2px);
+    background-color: var(--_on);
+  }
+}
+
+.app-toggle__helper {
+  font-size: 0.75rem;
+  color: var(--mat-sys-on-surface-variant);
+
+  &--error {
+    color: var(--app-error);
+  }
+}
+
+:host.app-toggle--sm { --_w: 2.25rem; --_h: 1.375rem; }
+:host.app-toggle--md { --_w: 3rem; --_h: 1.75rem; }
+:host.app-toggle--lg { --_w: 3.5rem; --_h: 2.125rem; }
+
+:host.app-toggle--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+@each $name, $tokens in $colors {
+  :host.app-toggle--#{$name} {
+    --_c: var(#{map.get($tokens, base)});
+    --_on: var(#{map.get($tokens, on)});
+  }
+}

@@ -1,0 +1,146 @@
+<h2 mat-dialog-title style="color: var(--mat-sys-on-surface)">Configuración de Mapa de Calor</h2>
+<mat-dialog-content>
+  <p class="mb-4" style="color: var(--mat-sys-on-surface-variant); margin-bottom: 24px">
+    Habilita el mapa de calor en las columnas numéricas o de fechas para visualizar una escala de
+    colores basada en sus valores.
+  </p>
+
+  <div class="flex flex-col gap-4" style="display: flex; flex-direction: column; gap: 16px">
+    @for (col of data.columns; track col) {
+      <div
+        class="flex flex-col p-4 rounded-lg gap-3"
+        style="
+          display: flex;
+          flex-direction: column;
+          padding: 16px;
+          border-radius: 12px;
+          gap: 12px;
+          border: 1px solid var(--mat-sys-outline-variant);
+        "
+        [style.background-color]="
+          getConfig(col)?.enabled
+            ? 'var(--mat-sys-surface-container-high)'
+            : 'var(--mat-sys-surface-container-lowest)'
+        "
+      >
+        <div
+          class="flex items-center justify-between"
+          style="display: flex; align-items: center; justify-content: space-between"
+        >
+          <span style="font-weight: 500; color: var(--mat-sys-on-surface)">{{ col }}</span>
+          <mat-slide-toggle [checked]="getConfig(col)?.enabled" (change)="toggleColumn(col)">
+            Habilitar
+          </mat-slide-toggle>
+        </div>
+
+        @if (getConfig(col)?.enabled) {
+          <div
+            class="flex flex-col gap-4"
+            style="display: flex; flex-direction: column; gap: 16px; margin-top: 8px"
+          >
+            <div class="flex gap-4 items-center" style="display: flex; gap: 16px">
+              @if (getConfig(col)?.dataType !== 'text') {
+                <mat-form-field appearance="outline" style="flex: 1">
+                  <mat-label>Dirección del Color</mat-label>
+                  <mat-select
+                    [ngModel]="getConfig(col)?.direction"
+                    (ngModelChange)="updateConfig(col, { direction: $event })"
+                  >
+                    <mat-option value="asc">Menor = Rojo, Mayor = Verde</mat-option>
+                    <mat-option value="desc">Menor = Verde, Mayor = Rojo</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              }
+
+              <mat-form-field appearance="outline" style="flex: 1">
+                <mat-label>Tipo de Dato</mat-label>
+                <mat-select
+                  [ngModel]="getConfig(col)?.dataType"
+                  (ngModelChange)="updateConfig(col, { dataType: $event })"
+                >
+                  <mat-option value="number">Número</mat-option>
+                  <mat-option value="date">Fecha</mat-option>
+                  <mat-option value="text">Texto</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            @if (getConfig(col)?.dataType === 'text') {
+              <div
+                class="flex flex-col gap-2"
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  gap: 8px;
+                  padding-top: 8px;
+                  border-top: 1px solid var(--mat-sys-outline-variant);
+                "
+              >
+                <div
+                  class="flex items-center justify-between"
+                  style="display: flex; align-items: center; justify-content: space-between"
+                >
+                  <span style="font-weight: 500; font-size: 14px; color: var(--mat-sys-on-surface)"
+                    >Reglas de Texto</span
+                  >
+                  <button mat-button color="primary" (click)="addTextRule(col)">
+                    <mat-icon>add</mat-icon>
+                    Agregar
+                  </button>
+                </div>
+
+                @for (rule of getConfig(col)?.textRules; track $index) {
+                  <div
+                    class="flex gap-3 items-center"
+                    style="display: flex; gap: 12px; align-items: center"
+                  >
+                    <mat-form-field appearance="outline" subscriptSizing="dynamic" style="flex: 1">
+                      <mat-label>Valor exacto</mat-label>
+                      <input
+                        matInput
+                        #valInput
+                        [value]="rule.value"
+                        (input)="updateTextRule(col, $index, valInput.value, rule.color)"
+                      />
+                    </mat-form-field>
+
+                    <div style="display: flex; align-items: center; gap: 8px; height: 56px">
+                      <input
+                        type="color"
+                        #colInput
+                        [value]="rule.color"
+                        (input)="updateTextRule(col, $index, rule.value, colInput.value)"
+                        style="
+                          width: 36px;
+                          height: 36px;
+                          border: none;
+                          border-radius: 4px;
+                          padding: 0;
+                          cursor: pointer;
+                          background: transparent;
+                        "
+                        title="Color"
+                      />
+                    </div>
+
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="removeTextRule(col, $index)"
+                      title="Eliminar regla"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Listo</button>
+</mat-dialog-actions>
