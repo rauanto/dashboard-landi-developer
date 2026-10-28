@@ -132,3 +132,39 @@
     word-break: break-all;
   }
 }
+
+.demo-table {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 1.25rem;
+  overflow: hidden;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr auto 8rem auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0.75rem 0.5rem 1rem;
+    border-top: 1px solid var(--mat-sys-outline-variant);
+    outline: none;
+    cursor: context-menu;
+    &:first-child { border-top: none; }
+    &:hover, &:focus-visible, &.app-context-open { background: var(--mat-sys-surface-container-high); }
+  }
+  &__name { font-weight: 500; }
+  &__saldo { text-align: right; font-variant-numeric: tabular-nums; color: var(--mat-sys-on-surface-variant); }
+}
+.demo-context-area {
+  display: grid;
+  place-items: center;
+  min-height: 7rem;
+  border: 2px dashed var(--mat-sys-outline-variant);
+  border-radius: 1.25rem;
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.875rem;
+  user-select: none;
+  &.app-context-open { border-color: var(--mat-sys-primary); }
+}
+
+.demo-cards--wide { grid-template-columns: repeat(auto-fill, minmax(24rem, 1fr)); margin-bottom: 1.5rem; }

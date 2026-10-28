@@ -8,11 +8,12 @@
   </div>
   <nav class="demo-nav">
     @for (s of [
-      ['botones', 'Botones'], ['badges', 'Badges y avatar'], ['inputs', 'Inputs'], ['selects', 'Selects'],
-      ['otro', 'OTP y archivos'], ['seleccion', 'Selección'], ['fechas', 'Fechas y números'],
-      ['extras', 'Chips y firma'], ['feedback', 'Feedback y cards'], ['formfield', 'Form field'], ['wizard', 'Formulario completo']
+    ['botones', 'Botones'], ['badges', 'Badges y avatar'], ['inputs', 'Inputs'], ['selects', 'Selects'],
+    ['otro', 'OTP y archivos'], ['seleccion', 'Selección'], ['fechas', 'Fechas y números'],
+    ['extras', 'Chips y firma'], ['menus', 'Menús'], ['feedback', 'Feedback y cards'], ['formfield', 'Form field'],
+    ['wizard', 'Formulario completo']
     ]; track s[0]) {
-      <a [href]="'#' + s[0]">{{ s[1] }}</a>
+    <a [href]="'#' + s[0]">{{ s[1] }}</a>
     }
   </nav>
 </header>
@@ -24,18 +25,18 @@
     <h3>Variante × color</h3>
     <div class="demo-matrix">
       @for (v of buttonVariants; track v) {
-        <div class="demo-row">
-          <span class="demo-row__label">{{ v }}</span>
-          @for (c of colors; track c) {
-            <button appButton [variant]="v" [color]="c">{{ c }}</button>
-          }
-        </div>
+      <div class="demo-row">
+        <span class="demo-row__label">{{ v }}</span>
+        @for (c of colors; track c) {
+        <button appButton [variant]="v" [color]="c">{{ c }}</button>
+        }
+      </div>
       }
     </div>
     <h3>Tamaños, iconos y estados</h3>
     <div class="demo-row">
       @for (s of sizes3; track s) {
-        <button appButton variant="filled" [size]="s">{{ s }}</button>
+      <button appButton variant="filled" [size]="s">{{ s }}</button>
       }
       <button appButton variant="filled" icon="save">Con ícono</button>
       <button appButton variant="tonal" icon="arrow_forward" iconPosition="end">Ícono al final</button>
@@ -48,17 +49,17 @@
   <section id="badges" class="demo-section">
     <h2>Badges y avatar</h2>
     @for (v of badgeVariants; track v) {
-      <div class="demo-row">
-        <span class="demo-row__label">{{ v }}</span>
-        @for (c of badgeColors; track c) {
-          <app-badge [variant]="v" [color]="c">{{ c }}</app-badge>
-        }
-      </div>
+    <div class="demo-row">
+      <span class="demo-row__label">{{ v }}</span>
+      @for (c of badgeColors; track c) {
+      <app-badge [variant]="v" [color]="c">{{ c }}</app-badge>
+      }
+    </div>
     }
     <div class="demo-row">
       <span class="demo-row__label">tamaños</span>
       @for (s of sizes; track s) {
-        <app-badge color="info" [size]="s" icon="info">{{ s }}</app-badge>
+      <app-badge color="info" [size]="s" icon="info">{{ s }}</app-badge>
       }
       <app-badge color="success" [dot]="true" />
       <app-badge color="error" [dot]="true" />
@@ -67,10 +68,10 @@
     <div class="demo-row">
       <span class="demo-row__label">avatar</span>
       @for (s of ['sm', 'md', 'lg', 'xl']; track s) {
-        <app-avatar label="Raúl Cruz" [size]="$any(s)" />
+      <app-avatar label="Raúl Cruz" [size]="$any(s)" />
       }
       @for (c of ['primary', 'secondary', 'tertiary', 'neutral']; track c) {
-        <app-avatar label="Ana López" [color]="$any(c)" />
+      <app-avatar label="Ana López" [color]="$any(c)" />
       }
     </div>
   </section>
@@ -81,15 +82,15 @@
     <h3>Variantes × tamaños</h3>
     <div class="demo-grid">
       @for (v of variants; track v) {
-        @for (s of sizes; track s) {
-          <app-input [label]="v + ' · ' + s" [variant]="v" [size]="s" />
-        }
+      @for (s of sizes; track s) {
+      <app-input [label]="v + ' · ' + s" [variant]="v" [size]="s" />
+      }
       }
     </div>
     <h3>Color del foco (haz click en cada uno)</h3>
     <div class="demo-grid">
       @for (c of colors; track c) {
-        <app-input [label]="c" [color]="c" />
+      <app-input [label]="c" [color]="c" />
       }
     </div>
     <h3>Tipos, íconos y acciones</h3>
@@ -133,15 +134,15 @@
     <h3>app-select · variantes × tamaños</h3>
     <div class="demo-grid">
       @for (v of variants; track v) {
-        @for (s of sizes; track s) {
-          <app-select [label]="v + ' · ' + s" [variant]="v" [size]="s" [options]="estados" />
-        }
+      @for (s of sizes; track s) {
+      <app-select [label]="v + ' · ' + s" [variant]="v" [size]="s" [options]="estados" />
+      }
       }
     </div>
     <h3>Colores, ícono, buscador, estados</h3>
     <div class="demo-grid">
       @for (c of colors; track c) {
-        <app-select [label]="c" [color]="c" [options]="estados" />
+      <app-select [label]="c" [color]="c" [options]="estados" />
       }
       <app-select label="Con ícono" prefixIcon="map" [options]="estados" />
       <app-select label="Con buscador" [searchable]="true" [options]="estados" />
@@ -152,11 +153,14 @@
     </div>
     <h3>Searchable, multi-select y autocomplete</h3>
     <div class="demo-grid">
-      <app-searchable-select label="Searchable" [formControl]="demoCtrl.searchable" [options]="estados" [clearable]="true" prefixIcon="search" />
+      <app-searchable-select label="Searchable" [formControl]="demoCtrl.searchable" [options]="estados"
+        [clearable]="true" prefixIcon="search" />
       <app-searchable-select label="Searchable (filled)" variant="filled" [options]="estados" />
       <app-multi-select label="Multi-select" [formControl]="demoCtrl.multi" [options]="estados" />
-      <app-multi-select label="Multi (sin seleccionar todo)" variant="filled" [showSelectAll]="false" [maxDisplayedChips]="1" [options]="estados" />
-      <app-autocomplete label="Autocomplete (catálogo)" [formControl]="demoCtrl.auto" [options]="estados" hint="Debe existir en el catálogo" />
+      <app-multi-select label="Multi (sin seleccionar todo)" variant="filled" [showSelectAll]="false"
+        [maxDisplayedChips]="1" [options]="estados" />
+      <app-autocomplete label="Autocomplete (catálogo)" [formControl]="demoCtrl.auto" [options]="estados"
+        hint="Debe existir en el catálogo" />
       <app-autocomplete label="Autocomplete (texto libre)" [freeText]="true" [options]="estados" />
     </div>
   </section>
@@ -171,7 +175,8 @@
     </div>
     <h3>app-file-upload</h3>
     <div class="demo-grid">
-      <app-file-upload variant="dropzone" label="Dropzone" category="documents" [multiple]="true" [maxFiles]="3" hint="PDF, Word o Excel · máx. 10 MB" />
+      <app-file-upload variant="dropzone" label="Dropzone" category="documents" [multiple]="true" [maxFiles]="3"
+        hint="PDF, Word o Excel · máx. 10 MB" />
       <app-file-upload variant="compact" label="Compacto" />
       <app-file-upload variant="button" label="Botón" buttonText="Adjuntar comprobante" />
       <app-file-upload variant="image" label="Foto (rectángulo)" category="images" />
@@ -185,12 +190,12 @@
     <h3>Checkbox</h3>
     <div class="demo-row">
       @for (c of colors; track c) {
-        <app-checkbox [color]="c" [formControl]="demoCtrl.checkbox">{{ c }}</app-checkbox>
+      <app-checkbox [color]="c" [formControl]="demoCtrl.checkbox">{{ c }}</app-checkbox>
       }
     </div>
     <div class="demo-row">
       @for (s of sizes3; track s) {
-        <app-checkbox [size]="s">{{ s }}</app-checkbox>
+      <app-checkbox [size]="s">{{ s }}</app-checkbox>
       }
       <app-checkbox [indeterminate]="true">Indeterminado</app-checkbox>
       <app-checkbox [disabled]="true">Deshabilitado</app-checkbox>
@@ -200,7 +205,8 @@
     <h3>Checkbox group</h3>
     <div class="demo-grid">
       <app-checkbox-group label="Días (vertical)" [options]="dias.slice(0, 4)" [formControl]="demoCtrl.group" />
-      <app-checkbox-group label="Días (horizontal, máx. 3)" direction="horizontal" [maxSelected]="3" color="tertiary" [options]="dias" hint="Máximo 3" />
+      <app-checkbox-group label="Días (horizontal, máx. 3)" direction="horizontal" [maxSelected]="3" color="tertiary"
+        [options]="dias" hint="Máximo 3" />
       <app-checkbox-group label="Requerido" [required]="true" [options]="dias.slice(0, 3)" />
     </div>
     <h3>Radio group</h3>
@@ -213,12 +219,12 @@
     <h3>Slide toggle</h3>
     <div class="demo-row">
       @for (c of colors; track c) {
-        <app-slide-toggle [color]="c" [formControl]="demoCtrl.toggle">{{ c }}</app-slide-toggle>
+      <app-slide-toggle [color]="c" [formControl]="demoCtrl.toggle">{{ c }}</app-slide-toggle>
       }
     </div>
     <div class="demo-row">
       @for (s of sizes3; track s) {
-        <app-slide-toggle [size]="s">{{ s }}</app-slide-toggle>
+      <app-slide-toggle [size]="s">{{ s }}</app-slide-toggle>
       }
       <app-slide-toggle labelPosition="before">Etiqueta antes</app-slide-toggle>
       <app-slide-toggle [showIcon]="false">Sin ícono</app-slide-toggle>
@@ -227,7 +233,8 @@
     <h3>Button toggle</h3>
     <div class="demo-grid">
       <app-button-toggle label="Simple" [options]="vistas" [formControl]="demoCtrl.bt" />
-      <app-button-toggle label="Múltiple" [multiple]="true" [options]="dias.slice(0, 4)" [formControl]="demoCtrl.btMulti" color="secondary" />
+      <app-button-toggle label="Múltiple" [multiple]="true" [options]="dias.slice(0, 4)"
+        [formControl]="demoCtrl.btMulti" color="secondary" />
       <app-button-toggle label="Ancho completo" [fullWidth]="true" [options]="frecuencias" color="tertiary" />
       <app-button-toggle label="Pequeño (permite vaciar)" size="sm" [allowEmpty]="true" [options]="frecuencias" />
       <app-button-toggle label="Grande" size="lg" color="success" [options]="frecuencias" />
@@ -241,12 +248,13 @@
     <h3>Datepicker</h3>
     <div class="demo-grid">
       @for (v of variants; track v) {
-        @for (s of sizes3; track s) {
-          <app-datepicker [label]="v + ' · ' + s" [variant]="v" [size]="s" />
-        }
+      @for (s of sizes3; track s) {
+      <app-datepicker [label]="v + ' · ' + s" [variant]="v" [size]="s" />
+      }
       }
       <app-datepicker label="Solo días hábiles" [filter]="finDeSemana" hint="Sábado y domingo deshabilitados" />
-      <app-datepicker label="Máx. hoy · valor ISO" [max]="hoy" valueFormat="iso" [formControl]="demoCtrl.fecha" [hint]="'Valor: ' + (demoCtrl.fecha.value ?? 'null')" />
+      <app-datepicker label="Máx. hoy · valor ISO" [max]="hoy" valueFormat="iso" [formControl]="demoCtrl.fecha"
+        [hint]="'Valor: ' + (demoCtrl.fecha.value ?? 'null')" />
       <app-datepicker label="Requerido" [required]="true" />
       <app-datepicker label="Deshabilitado" [disabled]="true" />
     </div>
@@ -265,7 +273,8 @@
     </div>
     <h3>Slider</h3>
     <div class="demo-grid">
-      <app-slider label="Monto" [min]="1000" [max]="50000" [step]="500" [format]="moneda" [formControl]="demoCtrl.slider" />
+      <app-slider label="Monto" [min]="1000" [max]="50000" [step]="500" [format]="moneda"
+        [formControl]="demoCtrl.slider" />
       <app-slider label="Rango" [range]="true" [formControl]="demoCtrl.sliderRange" color="tertiary" />
       <app-slider label="Discreto" [discrete]="true" [max]="10" color="success" hint="Con etiqueta al arrastrar" />
       <app-slider label="Deshabilitado" [disabled]="true" />
@@ -276,14 +285,80 @@
   <section id="extras" class="demo-section">
     <h2>Chips y firma</h2>
     <div class="demo-grid">
-      <app-chips label="Correos (valida formato)" [validate]="esCorreo" [formControl]="demoCtrl.chips" hint="Enter o coma para agregar" />
-      <app-chips label="Tags (máx. 4)" [maxChips]="4" [formControl]="demoCtrl.chipsTags" color="tertiary" variant="filled" />
+      <app-chips label="Correos (valida formato)" [validate]="esCorreo" [formControl]="demoCtrl.chips"
+        hint="Enter o coma para agregar" />
+      <app-chips label="Tags (máx. 4)" [maxChips]="4" [formControl]="demoCtrl.chipsTags" color="tertiary"
+        variant="filled" />
       <app-chips label="Requerido" [required]="true" color="success" />
     </div>
     <div class="demo-grid">
       <app-signature-pad label="Firma" [formControl]="demoCtrl.firma" hint="Dibuja con mouse o dedo" />
       <app-signature-pad label="Requerida" [required]="true" [height]="120" />
     </div>
+  </section>
+
+  <!-- ============ MENUS ============ -->
+  <section id="menus" class="demo-section">
+    <h2>Menú y menú contextual</h2>
+    <p class="demo-note">
+      Último evento: <strong>{{ ultimaAccion() }}</strong>
+    </p>
+
+    <h3>Menú con submenús, atajos y zona de peligro</h3>
+    <div class="demo-row">
+      <button appButton variant="filled" icon="expand_more" iconPosition="end"
+        [appMenuTriggerFor]="mAcciones">Acciones</button>
+      <app-menu #mAcciones [items]="menuAcciones" ariaLabel="Acciones" />
+
+      <button appButton variant="text" icon="more_vert" aria-label="Más opciones"
+        [appMenuTriggerFor]="mAcciones2"></button>
+      <app-menu #mAcciones2 [items]="menuAcciones" />
+
+      <button appButton variant="outlined" icon="filter_list" [appMenuTriggerFor]="mFiltros">Filtros</button>
+      <app-menu #mFiltros [items]="menuFiltros" (itemSelect)="onFiltro($event)" />
+      <span class="demo-note">Último filtro: {{ filtros() }}</span>
+    </div>
+
+    <h3>Con descripción, badge, deshabilitado y colores</h3>
+    <div class="demo-row">
+      <button appButton variant="tonal" color="secondary" [appMenuTriggerFor]="mDetalle">Decisión</button>
+      <app-menu #mDetalle [items]="menuDetalle" minWidth="16rem" />
+    </div>
+
+    <h3>Tamaños</h3>
+    <div class="demo-row">
+      @for (s of sizes3; track s) {
+      <button appButton variant="outlined" [size]="s" [appMenuTriggerFor]="mSize">{{ s }}</button>
+      <app-menu #mSize [items]="menuAcciones" [size]="s" />
+      }
+    </div>
+
+    <h3>Posición (si no cabe se voltea sola)</h3>
+    <div class="demo-row">
+      @for (p of placements; track p) {
+      <button appButton variant="text" [appMenuTriggerFor]="mPos" [appMenuPlacement]="p">{{ p }}</button>
+      <app-menu #mPos [items]="menuTexto" size="sm" />
+      }
+    </div>
+
+    <h3>Menú contextual (click derecho · pulsación larga en móvil · tecla Menú / Shift+F10)</h3>
+    <div class="demo-table" role="table" aria-label="Clientes">
+      @for (c of clientes; track c.id) {
+      <div class="demo-table__row" role="row" tabindex="0" [appContextMenu]="mFila" [appContextMenuData]="c">
+        <span class="demo-table__name">{{ c.nombre }}</span>
+        <app-badge [color]="c.estatus === 'Moroso' ? 'error' : 'success'" size="sm">{{ c.estatus }}</app-badge>
+        <span class="demo-table__saldo">{{ moneda(c.saldo) }}</span>
+        <button appButton variant="text" size="sm" icon="more_vert" aria-label="Acciones" [appMenuTriggerFor]="mFila"
+          [appMenuData]="c" appMenuPlacement="below-end"></button>
+      </div>
+      }
+    </div>
+    <app-menu #mFila [items]="menuFila" />
+
+    <div class="demo-context-area" [appContextMenu]="mTexto">
+      Haz click derecho en esta zona (menú genérico)
+    </div>
+    <app-menu #mTexto [items]="menuTexto" />
   </section>
 
   <!-- ============ FEEDBACK / CARDS ============ -->
@@ -296,17 +371,26 @@
     <h3>Toast lab</h3>
     <app-button-toggle label="Posición" [options]="posiciones" [formControl]="labPos" size="sm" />
     <div class="demo-row">
-      <button appButton variant="tonal" color="success" (click)="toast.success('Guardado correctamente', { position: labPos.value! })">Success</button>
-      <button appButton variant="tonal" color="error" (click)="toast.error('No se pudo guardar', { position: labPos.value!, action: { label: 'Reintentar', onClick: reintentar } })">Error + acción</button>
-      <button appButton variant="tonal" color="warning" (click)="toast.warning('Revisa los campos marcados', { position: labPos.value! })">Warning</button>
-      <button appButton variant="tonal" color="info" (click)="toast.info('Sincronizando…', { position: labPos.value! })">Info</button>
-      <button appButton variant="tonal" color="secondary" (click)="toast.neutral('Copiado al portapapeles', { position: labPos.value! })">Neutral</button>
+      <button appButton variant="tonal" color="success"
+        (click)="toast.success('Guardado correctamente', { position: labPos.value! })">Success</button>
+      <button appButton variant="tonal" color="error"
+        (click)="toast.error('No se pudo guardar', { position: labPos.value!, action: { label: 'Reintentar', onClick: reintentar } })">Error
+        + acción</button>
+      <button appButton variant="tonal" color="warning"
+        (click)="toast.warning('Revisa los campos marcados', { position: labPos.value! })">Warning</button>
+      <button appButton variant="tonal" color="info"
+        (click)="toast.info('Sincronizando…', { position: labPos.value! })">Info</button>
+      <button appButton variant="tonal" color="secondary"
+        (click)="toast.neutral('Copiado al portapapeles', { position: labPos.value! })">Neutral</button>
     </div>
     <div class="demo-row">
       <button appButton variant="outlined" (click)="toastLargo()">Mensaje largo</button>
-      <button appButton variant="outlined" (click)="toast.info('Permanente: ciérrala tú', { duration: 0, position: labPos.value! })">Permanente</button>
-      <button appButton variant="outlined" (click)="toast.success('Rápido (1 s)', { duration: 1000, position: labPos.value! })">Corto 1 s</button>
-      <button appButton variant="outlined" (click)="toast.warning('Bloqueante: las demás esperan', { blocking: true, description: 'Ciérrala para que aparezcan las que están en cola.', position: labPos.value! })">Bloqueante</button>
+      <button appButton variant="outlined"
+        (click)="toast.info('Permanente: ciérrala tú', { duration: 0, position: labPos.value! })">Permanente</button>
+      <button appButton variant="outlined"
+        (click)="toast.success('Rápido (1 s)', { duration: 1000, position: labPos.value! })">Corto 1 s</button>
+      <button appButton variant="outlined"
+        (click)="toast.warning('Bloqueante: las demás esperan', { blocking: true, description: 'Ciérrala para que aparezcan las que están en cola.', position: labPos.value! })">Bloqueante</button>
       <button appButton variant="outlined" (click)="cola()">Bloqueante + 3 en cola</button>
     </div>
     <div class="demo-row">
@@ -320,14 +404,49 @@
       <button appButton variant="filled" (click)="duplicados()">Mismo mensaje ×4 (contador)</button>
       <button appButton variant="text" color="error" (click)="toast.dismissAll()">Cerrar todas</button>
     </div>
-    <h3>Cards</h3>
+    <h3>Card estructurada (header · cuerpo · footer)</h3>
+    <div class="demo-cards demo-cards--wide">
+      <app-card heading="Título" description="Descripción de la card" variant="filled" [divided]="true">
+        <ng-container appCardHeaderActions>
+          <button appButton variant="text" icon="more_vert" aria-label="Más opciones"
+            [appMenuTriggerFor]="mCard"></button>
+          <app-menu #mCard [items]="menuAcciones" />
+        </ng-container>
+        <div class="demo-card-body"><span>Cuerpo: aquí va cualquier contenido (formularios, tablas, texto…).</span>
+        </div>
+        <button appCardFooterStart appButton variant="text" icon="history">Ver historial</button>
+        <ng-container appCardFooterEnd>
+          <button appButton variant="outlined">Cancelar</button>
+          <button appButton variant="filled">Guardar</button>
+        </ng-container>
+      </app-card>
+
+      <app-card heading="Cliente" description="Datos generales" leadingIcon="person" variant="elevated" color="primary"
+        [collapsible]="true">
+        <button appCardHeaderActions appButton variant="text" icon="edit" aria-label="Editar"></button>
+        <div class="demo-card-body"><span>Se puede contraer con la flecha.</span></div>
+        <button appCardFooterStart appButton variant="text">Acción rápida</button>
+        <button appCardFooterEnd appButton variant="filled">Continuar</button>
+      </app-card>
+
+      <app-card heading="Cargando" description="Estado loading" variant="filled" [loading]="true" [interactive]="true"
+        (cardClick)="toast.info('Card clickeada')">
+        <div class="demo-card-body"><span>Interactiva + loading.</span></div>
+      </app-card>
+
+      <app-card heading="Error de validación" description="Color semántico" variant="filled" color="error">
+        <div class="demo-card-body"><span>Revisa los datos.</span></div>
+        <ng-container appCardFooterEnd><button appButton variant="tonal" color="error">Corregir</button></ng-container>
+      </app-card>
+    </div>
+    <h3>Card simple (compatibilidad)</h3>
     <div class="demo-cards">
       @for (v of cardVariants; track v) {
-        @for (c of ['surface', 'primary', 'success', 'error']; track c) {
-          <app-card [variant]="v" [color]="$any(c)">
-            <div class="demo-card-body"><strong>{{ v }}</strong><span>{{ c }}</span></div>
-          </app-card>
-        }
+      @for (c of ['surface', 'primary', 'success', 'error']; track c) {
+      <app-card [variant]="v" [color]="$any(c)">
+        <div class="demo-card-body"><strong>{{ v }}</strong><span>{{ c }}</span></div>
+      </app-card>
+      }
       }
     </div>
   </section>
@@ -336,7 +455,8 @@
   <section id="formfield" class="demo-section">
     <h2>app-form-field (equivalente a mat-form-field)</h2>
     <p class="demo-note">
-      Label estático con asterisco automático, hint y error automático (al tocar y salir). No pases label/hint/required al control interno.
+      Label estático con asterisco automático, hint y error automático (al tocar y salir). No pases label/hint/required
+      al control interno.
     </p>
     <div class="demo-grid">
       <app-form-field label="Nombre" hint="Como aparece en tu INE">
@@ -358,7 +478,8 @@
   <section id="wizard" class="demo-section">
     <h2>Formulario completo · Solicitud de crédito</h2>
     <p class="demo-note">
-      Wizard con validación por paso, validadores mexicanos (CURP, RFC, CLABE…), FormArray y firma. Los errores salen al tocar un campo o al intentar avanzar.
+      Wizard con validación por paso, validadores mexicanos (CURP, RFC, CLABE…), FormArray y firma. Los errores salen al
+      tocar un campo o al intentar avanzar.
     </p>
 
     <form [formGroup]="form" class="demo-wizard" (ngSubmit)="enviar()">
@@ -434,15 +555,8 @@
               <app-input formControlName="clabe" format="digits" [maxLength]="18" />
             </app-form-field>
 
-            <app-repeater
-              [array]="referencias"
-              [factory]="nuevaReferencia"
-              label="Referencias personales"
-              itemLabel="Referencia"
-              addLabel="Agregar referencia"
-              [min]="1"
-              [max]="3"
-            >
+            <app-repeater [array]="referencias" [factory]="nuevaReferencia" label="Referencias personales"
+              itemLabel="Referencia" addLabel="Agregar referencia" [min]="1" [max]="3">
               <ng-template let-g let-i="index">
                 <div class="demo-grid">
                   <app-form-field label="Nombre">
@@ -487,14 +601,31 @@
     </form>
 
     <div class="demo-row">
-      <button appButton variant="outlined" color="warning" type="button" (click)="validarTodo()">Marcar todos los errores</button>
-      <button appButton variant="text" color="secondary" type="button" (click)="resetForm()">Reiniciar formulario</button>
-      <app-badge [color]="form.valid ? 'success' : 'error'">{{ form.valid ? 'Formulario válido' : 'Formulario inválido' }}</app-badge>
+      <button appButton variant="outlined" color="warning" type="button" (click)="validarTodo()">Marcar todos los
+        errores</button>
+      <button appButton variant="text" color="secondary" type="button" (click)="resetForm()">Reiniciar
+        formulario</button>
+      <app-badge [color]="form.valid ? 'success' : 'error'">{{ form.valid ? 'Formulario válido' : 'Formulario inválido'
+        }}</app-badge>
     </div>
 
     <details class="demo-json" [open]="!!enviado()">
       <summary>Valor del formulario {{ enviado() ? '(enviado)' : '(en vivo)' }}</summary>
       <pre>{{ (enviado() ?? form.getRawValue()) | json }}</pre>
     </details>
+
+
+    <app-card heading="Título" description="Descripción" variant="outlined" [divided]="true">
+      <button appCardHeaderActions appButton variant="text" icon="more_vert"></button>
+      <!-- acción rápida arriba a la derecha -->
+
+      …cuerpo (cualquier contenido)…
+
+      <button appCardFooterStart appButton variant="text">Acción rápida</button> <!-- abajo a la izquierda -->
+      <ng-container appCardFooterEnd> <!-- botones abajo a la derecha -->
+        <button appButton variant="outlined">Cancelar</button>
+        <button appButton variant="filled">Guardar</button>
+      </ng-container>
+    </app-card>
   </section>
 </main>

@@ -31,3 +31,5 @@ export * from './components/repeater';
 export * from './components/signature-pad';
 export * from './components/confirm-dialog';
 export * from './components/toast';
+
+export * from './components/menu'

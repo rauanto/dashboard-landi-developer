@@ -17,7 +17,10 @@ import {
   AppDatepickerComponent,
   AppFileUploadComponent,
   AppFormFieldComponent,
+  AppContextMenuDirective,
   AppInputComponent,
+  AppMenuComponent,
+  AppMenuTriggerDirective,
   AppMultiSelectComponent,
   AppNumberStepperComponent,
   AppOtpInputComponent,
@@ -31,6 +34,9 @@ import {
   AppStepComponent,
   AppStepperComponent,
   ConfirmService,
+  MenuItem,
+  MenuPlacement,
+  MenuSelectEvent,
   SelectOption,
   ToastPosition,
   ToastService,
@@ -65,7 +71,10 @@ const COLORS = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'info'
     AppDatepickerComponent,
     AppFileUploadComponent,
     AppFormFieldComponent,
+    AppContextMenuDirective,
     AppInputComponent,
+    AppMenuComponent,
+    AppMenuTriggerDirective,
     AppMultiSelectComponent,
     AppNumberStepperComponent,
     AppOtpInputComponent,
@@ -249,6 +258,107 @@ export class UiDemoComponent {
 
   constructor() {
     this.mode.valueChanges.pipe(takeUntilDestroyed()).subscribe((v) => this.setMode(v));
+  }
+
+  // ---------- menús ----------
+  ultimaAccion = signal('—');
+  readonly placements: MenuPlacement[] = ['below-start', 'below-end', 'above-start', 'above-end', 'right', 'left'];
+
+  private log = (name: string) => () => this.ultimaAccion.set(name);
+
+  menuAcciones: MenuItem[] = [
+    { label: 'Editar', icon: 'edit', shortcut: 'Ctrl+E', command: this.log('Editar') },
+    { label: 'Duplicar', icon: 'content_copy', shortcut: 'Ctrl+D', command: this.log('Duplicar') },
+    {
+      type: 'submenu',
+      label: 'Compartir',
+      icon: 'share',
+      children: [
+        { label: 'Por correo', icon: 'mail', command: this.log('Compartir · correo') },
+        { label: 'WhatsApp', icon: 'chat', command: this.log('Compartir · WhatsApp') },
+        {
+          type: 'submenu',
+          label: 'Exportar como…',
+          icon: 'download',
+          children: [
+            { label: 'PDF', icon: 'picture_as_pdf', command: this.log('Exportar PDF') },
+            { label: 'Excel', icon: 'table_chart', command: this.log('Exportar Excel') },
+            { label: 'CSV', command: this.log('Exportar CSV') },
+          ],
+        },
+      ],
+    },
+    { type: 'divider' },
+    { type: 'label', label: 'Zona de peligro' },
+    { label: 'Archivar', icon: 'archive', command: this.log('Archivar') },
+    { label: 'Eliminar', icon: 'delete', color: 'error', shortcut: 'Supr', command: () => this.eliminar() },
+  ];
+
+  filtros = signal('Sin cambios');
+  menuFiltros: MenuItem[] = [
+    { type: 'label', label: 'Mostrar' },
+    { type: 'checkbox', label: 'Activos', checked: true, keepOpen: true },
+    { type: 'checkbox', label: 'Morosos', checked: true, keepOpen: true, badge: 12 },
+    { type: 'checkbox', label: 'Dados de baja', keepOpen: true },
+    { type: 'divider' },
+    { type: 'label', label: 'Ordenar por' },
+    { type: 'radio', group: 'orden', label: 'Nombre', value: 'nombre', checked: true, keepOpen: true },
+    { type: 'radio', group: 'orden', label: 'Fecha de alta', value: 'fecha', keepOpen: true },
+    { type: 'radio', group: 'orden', label: 'Saldo', value: 'saldo', keepOpen: true },
+    { type: 'divider' },
+    { type: 'radio', group: 'dir', label: 'Ascendente', value: 'asc', checked: true },
+    { type: 'radio', group: 'dir', label: 'Descendente', value: 'desc' },
+  ];
+
+  menuDetalle: MenuItem[] = [
+    { label: 'Aprobar crédito', icon: 'verified', color: 'success', description: 'Pasa a desembolso', command: this.log('Aprobar') },
+    { label: 'Solicitar documentos', icon: 'attach_file', description: 'Envía recordatorio al cliente', badge: 3, command: this.log('Solicitar docs') },
+    { label: 'Reestructurar', icon: 'autorenew', color: 'warning', description: 'Requiere autorización', disabled: true },
+    { label: 'Rechazar', icon: 'block', color: 'error', command: this.log('Rechazar') },
+    { label: 'Oculto', hidden: true },
+  ];
+
+  readonly clientes = [
+    { id: 1, nombre: 'Raúl de la Cruz', telefono: '9931234567', estatus: 'Activo', saldo: 15000 },
+    { id: 2, nombre: 'Ana López', telefono: '', estatus: 'Moroso', saldo: 42800 },
+    { id: 3, nombre: 'Carlos Pérez', telefono: '9935550101', estatus: 'Activo', saldo: 0 },
+  ];
+
+  menuFila: MenuItem[] = [
+    { label: 'Ver detalle', icon: 'visibility', command: (c) => this.ultimaAccion.set(`Ver detalle · ${c.nombre}`) },
+    { label: 'Editar', icon: 'edit', shortcut: 'Enter', command: (c) => this.ultimaAccion.set(`Editar · ${c.nombre}`) },
+    {
+      label: 'Llamar',
+      icon: 'call',
+      disabled: (c) => !c.telefono,
+      description: undefined,
+      command: (c) => this.ultimaAccion.set(`Llamar · ${c.telefono}`),
+    },
+    {
+      type: 'submenu',
+      label: 'Cambiar estatus',
+      icon: 'flag',
+      children: [
+        { type: 'radio', group: 'est', label: 'Activo', value: 'Activo', command: (c) => this.ultimaAccion.set(`Estatus Activo · ${c.nombre}`) },
+        { type: 'radio', group: 'est', label: 'Moroso', value: 'Moroso', command: (c) => this.ultimaAccion.set(`Estatus Moroso · ${c.nombre}`) },
+        { type: 'radio', group: 'est', label: 'Baja', value: 'Baja', command: (c) => this.ultimaAccion.set(`Estatus Baja · ${c.nombre}`) },
+      ],
+    },
+    { type: 'divider' },
+    { label: 'Eliminar', icon: 'delete', color: 'error', hidden: (c) => c.saldo > 0, command: () => this.eliminar() },
+    { label: 'No se puede eliminar (tiene saldo)', icon: 'lock', disabled: true, hidden: (c) => c.saldo === 0 },
+  ];
+
+  menuTexto: MenuItem[] = [
+    { label: 'Cortar', icon: 'content_cut', shortcut: 'Ctrl+X', command: this.log('Cortar') },
+    { label: 'Copiar', icon: 'content_copy', shortcut: 'Ctrl+C', command: this.log('Copiar') },
+    { label: 'Pegar', icon: 'content_paste', shortcut: 'Ctrl+V', command: this.log('Pegar') },
+    { type: 'divider' },
+    { label: 'Seleccionar todo', shortcut: 'Ctrl+A', command: this.log('Seleccionar todo') },
+  ];
+
+  onFiltro(e: MenuSelectEvent): void {
+    this.filtros.set(`${e.item.label}${e.checked === undefined ? '' : e.checked ? ' ✓' : ' ✗'}`);
   }
 
   // ---------- toast lab ----------
