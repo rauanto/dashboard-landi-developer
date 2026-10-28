@@ -9,6 +9,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 
 import { DashboardLayoutComponent } from '@shared/layout/dashboard-layout/dashboard-layout.component';
 import { FooterComponent } from '@shared/components/footer/footer.component';
+import { MobileNavigationComponent, MobileNavigationItem } from '@shared/components/mobile-navigation/mobile-navigation.component';
 import { ProfileCardComponent } from '@shared/components/profile-card/profile-card.component';
 import { NavMenuComponent, NavSection } from '@shared/components/nav-menu/nav-menu.component';
 
@@ -29,6 +30,7 @@ import {DarkBtn} from '@shared/components/dark-btn/dark-btn'
     RouterOutlet,
     DashboardLayoutComponent,
     FooterComponent,
+    MobileNavigationComponent,
     ProfileCardComponent,
     NavMenuComponent,
     MatIconModule,
@@ -81,6 +83,14 @@ export class DashboardLayout {
         { path: '/dashboard/permissions', icon: 'security', label: 'Permisos' },
       ]
     }
+  ];
+
+  readonly mobileNavItems: MobileNavigationItem[] = [
+    { path: '/dashboard/home', icon: 'home', label: 'Inicio', exact: true },
+    { path: '/dashboard/form-view', icon: 'assignment', label: 'Formularios' },
+    { path: '/dashboard/view-tables', icon: 'table_view', label: 'Tablas' },
+    { path: '/dashboard/roles', icon: 'manage_accounts', label: 'Roles' },
+    { path: '/dashboard/permissions', icon: 'security', label: 'Permisos' },
   ];
 
   ngOnInit() {

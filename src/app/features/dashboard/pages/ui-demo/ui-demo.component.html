@@ -94,7 +94,7 @@
     </div>
     <h3>Tipos, íconos y acciones</h3>
     <div class="demo-grid">
-      <app-input label="Correo" type="email" prefixIcon="mail" hint="Usa tu correo corporativo" size="xs" />
+      <app-input label="Correo" type="email" prefixIcon="mail" hint="Usa tu correo corporativo" />
       <app-input label="Contraseña" type="password" prefixIcon="lock" />
       <app-input label="Buscar" type="search" prefixIcon="search" [clearable]="true" />
       <app-input label="Con placeholder" placeholder="Escribe algo…" />
@@ -293,11 +293,32 @@
       <button appButton variant="filled" (click)="preguntar()">Confirmar</button>
       <button appButton variant="tonal" color="error" icon="delete" (click)="eliminar()">Eliminar</button>
     </div>
+    <h3>Toast lab</h3>
+    <app-button-toggle label="Posición" [options]="posiciones" [formControl]="labPos" size="sm" />
     <div class="demo-row">
-      <button appButton variant="tonal" color="success" (click)="toast.success('Guardado correctamente')">Success</button>
-      <button appButton variant="tonal" color="error" (click)="toast.error('No se pudo guardar', { actionLabel: 'Reintentar' })">Error</button>
-      <button appButton variant="tonal" color="warning" (click)="toast.warning('Revisa los campos marcados')">Warning</button>
-      <button appButton variant="tonal" color="info" (click)="toast.info('Sincronizando…')">Info</button>
+      <button appButton variant="tonal" color="success" (click)="toast.success('Guardado correctamente', { position: labPos.value! })">Success</button>
+      <button appButton variant="tonal" color="error" (click)="toast.error('No se pudo guardar', { position: labPos.value!, action: { label: 'Reintentar', onClick: reintentar } })">Error + acción</button>
+      <button appButton variant="tonal" color="warning" (click)="toast.warning('Revisa los campos marcados', { position: labPos.value! })">Warning</button>
+      <button appButton variant="tonal" color="info" (click)="toast.info('Sincronizando…', { position: labPos.value! })">Info</button>
+      <button appButton variant="tonal" color="secondary" (click)="toast.neutral('Copiado al portapapeles', { position: labPos.value! })">Neutral</button>
+    </div>
+    <div class="demo-row">
+      <button appButton variant="outlined" (click)="toastLargo()">Mensaje largo</button>
+      <button appButton variant="outlined" (click)="toast.info('Permanente: ciérrala tú', { duration: 0, position: labPos.value! })">Permanente</button>
+      <button appButton variant="outlined" (click)="toast.success('Rápido (1 s)', { duration: 1000, position: labPos.value! })">Corto 1 s</button>
+      <button appButton variant="outlined" (click)="toast.warning('Bloqueante: las demás esperan', { blocking: true, description: 'Ciérrala para que aparezcan las que están en cola.', position: labPos.value! })">Bloqueante</button>
+      <button appButton variant="outlined" (click)="cola()">Bloqueante + 3 en cola</button>
+    </div>
+    <div class="demo-row">
+      <button appButton variant="outlined" icon="hourglass_top" (click)="cargando()">Loading → éxito</button>
+      <button appButton variant="outlined" icon="check" (click)="promesa(true)">Promise OK</button>
+      <button appButton variant="outlined" icon="close" (click)="promesa(false)">Promise error</button>
+      <button appButton variant="outlined" icon="bolt" (click)="porEvento()">Cierra por evento (4 s)</button>
+    </div>
+    <div class="demo-row">
+      <button appButton variant="filled" (click)="spam()">Spam ×8 (se agrupan)</button>
+      <button appButton variant="filled" (click)="duplicados()">Mismo mensaje ×4 (contador)</button>
+      <button appButton variant="text" color="error" (click)="toast.dismissAll()">Cerrar todas</button>
     </div>
     <h3>Cards</h3>
     <div class="demo-cards">

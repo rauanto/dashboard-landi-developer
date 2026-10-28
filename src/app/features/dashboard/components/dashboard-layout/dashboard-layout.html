@@ -58,4 +58,8 @@
       </mat-sidenav-content>
     </mat-sidenav-container>
   </div>
+
+  @if (sidenavService.isMobile()) {
+    <app-mobile-navigation [items]="mobileNavItems"></app-mobile-navigation>
+  }
 </app-dashboard-layout>

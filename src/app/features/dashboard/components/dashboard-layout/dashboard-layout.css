@@ -75,7 +75,13 @@ app-footer {
 
 @media (max-width: 599px) {
     .content-padding {
-        padding: 16px;
+        padding: 16px 16px 88px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 839px) {
+    .content-padding {
+        padding-bottom: 88px;
     }
 }
 

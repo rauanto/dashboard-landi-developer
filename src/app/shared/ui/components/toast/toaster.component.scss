@@ -1,0 +1,272 @@
+@use 'sass:map';
+
+$types: (
+  success: (bg: --app-success-container, fg: --app-on-success-container, accent: --app-success),
+  error: (bg: --app-error-container, fg: --app-on-error-container, accent: --app-error),
+  warning: (bg: --app-warning-container, fg: --app-on-warning-container, accent: --app-warning),
+  info: (bg: --app-info-container, fg: --app-on-info-container, accent: --app-info),
+  loading: (bg: --mat-sys-surface-container-high, fg: --mat-sys-on-surface, accent: --mat-sys-primary),
+  neutral: (bg: --mat-sys-inverse-surface, fg: --mat-sys-inverse-on-surface, accent: --mat-sys-inverse-primary),
+);
+
+:host {
+  display: contents;
+}
+
+// ---------- contenedores por posición ----------
+.toaster {
+  position: fixed;
+  z-index: var(--toast-z, 10000);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: min(26rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  pointer-events: none;
+  font-family: inherit;
+
+  &--expanded {
+    overflow-y: auto;
+    pointer-events: auto;
+    scrollbar-width: thin;
+  }
+
+  &--top-left, &--top-center, &--top-right { top: max(1rem, env(safe-area-inset-top)); }
+  &--bottom-left, &--bottom-center, &--bottom-right { bottom: max(1rem, env(safe-area-inset-bottom)); }
+  &--top-left, &--bottom-left { left: 1rem; }
+  &--top-right, &--bottom-right { right: 1rem; }
+  &--top-center, &--bottom-center { left: 50%; transform: translateX(-50%); }
+}
+
+@media (max-width: 600px) {
+  .toaster {
+    left: 1rem !important;
+    right: 1rem !important;
+    width: auto;
+    transform: none !important;
+  }
+}
+
+// ---------- resumen "+N más" ----------
+.toaster__summary {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  align-self: center;
+  padding: 0.25rem 0.375rem 0.25rem 0.875rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  background: var(--mat-sys-inverse-surface);
+  color: var(--mat-sys-inverse-on-surface);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
+
+  &-text {
+    font-weight: 600;
+    margin-right: 0.25rem;
+  }
+  button {
+    border: none;
+    background: transparent;
+    color: var(--mat-sys-inverse-primary);
+    font: inherit;
+    font-weight: 600;
+    padding: 0.25rem 0.625rem;
+    border-radius: 100px;
+    cursor: pointer;
+    &:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
+  }
+}
+
+// ---------- toast ----------
+.toast {
+  position: relative;
+  pointer-events: auto;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0.875rem 0.875rem 0.875rem 1rem;
+  border-radius: 1.25rem;
+  overflow: hidden;
+  touch-action: pan-y;
+  background: var(--_bg);
+  color: var(--_fg);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.18), 0 1px 3px rgb(0 0 0 / 0.12);
+  animation: toast-in 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transition:
+    transform 180ms ease,
+    opacity 180ms ease;
+
+  &--top { --_from: -14px; }
+  &:not(.toast--top) { --_from: 14px; }
+
+  &--leaving {
+    animation: toast-out 200ms ease forwards;
+    pointer-events: none;
+  }
+}
+
+.toast__lead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  min-height: 1.5rem;
+  color: var(--_accent);
+
+  &:empty { display: none; }
+  mat-icon { width: 1.5rem; height: 1.5rem; font-size: 1.5rem; }
+}
+.toast:has(.toast__lead:empty) {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.toast__spinner {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 2.5px solid color-mix(in srgb, var(--_accent) 25%, transparent);
+  border-top-color: var(--_accent);
+  animation: toast-spin 800ms linear infinite;
+}
+
+.toast__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+  padding-top: 0.0625rem;
+}
+
+.toast__title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+
+  &--clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+.toast__desc {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  opacity: 0.9;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+
+  &--clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.toast__count {
+  display: inline-block;
+  margin-left: 0.375rem;
+  padding: 0 0.4rem;
+  border-radius: 100px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1.4;
+  vertical-align: 1px;
+  background: color-mix(in srgb, currentColor 18%, transparent);
+}
+
+.toast__more,
+.toast__action {
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0.125rem 0;
+}
+.toast__more {
+  font-size: 0.75rem;
+  text-decoration: underline;
+  opacity: 0.85;
+}
+.toast__action {
+  margin-top: 0.25rem;
+  padding: 0.3125rem 0.875rem;
+  border-radius: 100px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1.5px solid color-mix(in srgb, currentColor 40%, transparent);
+  &:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+}
+
+.toast__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  opacity: 0.75;
+
+  mat-icon { width: 1.125rem; height: 1.125rem; font-size: 1.125rem; }
+  &:hover { opacity: 1; background: color-mix(in srgb, currentColor 14%, transparent); }
+}
+
+.toast button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+// ---------- barra de tiempo ----------
+.toast__progress {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: color-mix(in srgb, var(--_accent) 18%, transparent);
+
+  span {
+    display: block;
+    height: 100%;
+    background: var(--_accent);
+    transform-origin: left center;
+    animation: toast-progress linear forwards;
+  }
+}
+
+// ---------- colores por tipo ----------
+@each $name, $t in $types {
+  .toast--#{$name} {
+    --_bg: var(#{map.get($t, bg)});
+    --_fg: var(#{map.get($t, fg)});
+    --_accent: var(#{map.get($t, accent)});
+  }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(var(--_from)) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: scale(0.94); }
+}
+@keyframes toast-progress {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+@keyframes toast-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast, .toast__progress span { animation-duration: 1ms !important; }
+  .toast__spinner { animation-duration: 2s; }
+}

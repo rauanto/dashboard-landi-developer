@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { DOCUMENT, JsonPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { timer } from 'rxjs';
 import { FormArray, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   AppAutocompleteComponent,
@@ -31,6 +32,7 @@ import {
   AppStepperComponent,
   ConfirmService,
   SelectOption,
+  ToastPosition,
   ToastService,
   algunoRequeridoValidator,
   clabeValidator,
@@ -41,7 +43,7 @@ import {
   passwordFuerteValidator,
   rfcValidator,
   telefonoMxValidator,
-} from '@/shared/ui';
+} from '@shared/ui';
 
 const COLORS = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'info', 'error'] as const;
 
@@ -151,6 +153,16 @@ export class UiDemoComponent {
   ];
   mode = new FormControl('light');
 
+  posiciones: SelectOption[] = [
+    { label: '↖', value: 'top-left' },
+    { label: '↑ Arriba', value: 'top-center' },
+    { label: '↗', value: 'top-right' },
+    { label: '↙', value: 'bottom-left' },
+    { label: '↓ Abajo', value: 'bottom-center' },
+    { label: '↘', value: 'bottom-right' },
+  ];
+  labPos = new FormControl<ToastPosition>('top-right');
+
   demoCtrl = {
     checkbox: new FormControl(true),
     group: new FormControl(['Lun', 'Mié']),
@@ -237,6 +249,54 @@ export class UiDemoComponent {
 
   constructor() {
     this.mode.valueChanges.pipe(takeUntilDestroyed()).subscribe((v) => this.setMode(v));
+  }
+
+  // ---------- toast lab ----------
+  private get pos(): ToastPosition {
+    return this.labPos.value ?? 'top-right';
+  }
+
+  reintentar = () => this.toast.info('Reintentando…', { position: this.pos });
+
+  toastLargo(): void {
+    this.toast.error('No se pudo completar el depósito', {
+      position: this.pos,
+      description:
+        'La CLABE 012180015678901234 fue rechazada por el banco receptor porque la cuenta se encuentra restringida o cancelada. ' +
+        'Verifica el número con el cliente, confirma que el titular coincida con el solicitante y vuelve a intentarlo. ' +
+        'Si el problema persiste, contacta a soporte con el folio SPEI 20261027-998877.',
+    });
+  }
+
+  cola(): void {
+    this.toast.warning('Sesión por expirar', { blocking: true, description: 'Guarda tu avance.', position: this.pos });
+    ['Se guardó el borrador', 'Se sincronizaron 3 registros', 'Correo enviado'].forEach((m) =>
+      this.toast.success(m, { position: this.pos })
+    );
+  }
+
+  cargando(): void {
+    const t = this.toast.loading('Guardando cliente…', { position: this.pos });
+    setTimeout(() => t.success('Cliente guardado', { description: 'Folio CL-00123' }), 2000);
+  }
+
+  promesa(ok: boolean): void {
+    const p = new Promise<string>((res, rej) => setTimeout(() => (ok ? res('CL-00123') : rej(new Error('Timeout'))), 2000));
+    this.toast
+      .promise(p, { loading: 'Enviando solicitud…', success: (f) => `Solicitud enviada (${f})`, error: (e) => `Error: ${(e as Error).message}` }, { position: this.pos })
+      .catch(() => undefined);
+  }
+
+  porEvento(): void {
+    this.toast.info('Procesando archivo…', { position: this.pos, duration: 0, closeOn: timer(4000), description: 'Se cerrará sola cuando termine el evento.' });
+  }
+
+  spam(): void {
+    for (let i = 1; i <= 8; i++) this.toast.info(`Notificación ${i}`, { position: this.pos, duration: 15000 });
+  }
+
+  duplicados(): void {
+    for (let i = 0; i < 4; i++) this.toast.error('Sin conexión con el servidor', { position: this.pos });
   }
 
   // ---------- acciones ----------
