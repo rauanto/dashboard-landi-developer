@@ -6,7 +6,7 @@ $types: (
   warning: (bg: --app-warning-container, fg: --app-on-warning-container, accent: --app-warning),
   info: (bg: --app-info-container, fg: --app-on-info-container, accent: --app-info),
   loading: (bg: --mat-sys-surface-container-high, fg: --mat-sys-on-surface, accent: --mat-sys-primary),
-  neutral: (bg: --mat-sys-inverse-surface, fg: --mat-sys-inverse-on-surface, accent: --mat-sys-inverse-primary),
+  neutral: (bg: --mat-sys-inverse-surface, fg: --mat-sys-on-inverse-surface, accent: --mat-sys-inverse-primary),
 );
 
 :host {
@@ -58,7 +58,7 @@ $types: (
   border-radius: 100px;
   font-size: 0.75rem;
   background: var(--mat-sys-inverse-surface);
-  color: var(--mat-sys-inverse-on-surface);
+  color: var(--mat-sys-on-inverse-surface, var(--mat-sys-inverse-on-surface));
   box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
 
   &-text {
@@ -68,13 +68,17 @@ $types: (
   button {
     border: none;
     background: transparent;
-    color: var(--mat-sys-inverse-primary);
+    color: inherit;
     font: inherit;
     font-weight: 600;
     padding: 0.25rem 0.625rem;
     border-radius: 100px;
     cursor: pointer;
     &:hover { background: color-mix(in srgb, currentColor 14%, transparent); }
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 1px;
+    }
   }
 }
 

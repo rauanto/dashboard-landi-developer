@@ -20,10 +20,10 @@
             variant="text"
             color="primary"
             size="sm"
+            icon="filter_list"
+            aria-label="Mostrar filtros"
             (click)="globalSidenav.toggle()"
-            class="flex items-center gap-2"
           >
-            <mat-icon>filter_list</mat-icon>
           </button>
 
           <button
@@ -31,10 +31,10 @@
             variant="text"
             color="primary"
             size="sm"
+            icon="tune"
+            aria-label="Configurar mapa de calor"
             (click)="openHeatmapSettings()"
-            class="flex items-center gap-2"
           >
-            <mat-icon>tune</mat-icon>
           </button>
 
 
@@ -55,11 +55,11 @@
               variant="text"
               color="primary"
               size="sm"
+              icon="data_object"
+              aria-label="Generar reporte PDF"
               (click)="generateReport()"
-              class="flex items-center gap-2"
               matTooltip="Generar Reporte PDF"
             >
-              <mat-icon>data_object</mat-icon>
             </button>
           </div>
 

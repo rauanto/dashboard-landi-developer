@@ -35,5 +35,10 @@ export const DASHBOARD_ROUTES: Routes = [
         path: 'ui-demo',
         loadComponent: () => import('./pages/ui-demo/ui-demo.component').then((c) => c.UiDemoComponent),
         title: 'UI Demo',
+    },
+    {
+        path: 'ui-demo/:section',
+        loadComponent: () => import('./pages/ui-demo/ui-demo.component').then((c) => c.UiDemoComponent),
+        title: 'UI Kit · Componentes',
     }
 ];

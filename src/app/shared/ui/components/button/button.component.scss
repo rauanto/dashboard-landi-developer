@@ -93,6 +93,42 @@ $button-colors: (
     font-size: 1rem;
   }
 
+  &:has(.app-button__icon):has(.app-button__label:empty) {
+    display: inline-grid;
+    place-items: center;
+    gap: 0;
+    box-sizing: border-box;
+    padding: 0;
+  }
+
+  &.app-button--xs:has(.app-button__icon):has(.app-button__label:empty) {
+    width: 1.5rem;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1rem;
+  }
+
+  &.app-button--sm:has(.app-button__icon):has(.app-button__label:empty) {
+    width: 2rem;
+    min-width: 2rem;
+    height: 2rem;
+    font-size: 1.125rem;
+  }
+
+  &.app-button--md:has(.app-button__icon):has(.app-button__label:empty) {
+    width: 2.5rem;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+  }
+
+  &.app-button--lg:has(.app-button__icon):has(.app-button__label:empty) {
+    width: 3rem;
+    min-width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+  }
+
   // Anillo de foco SOLO para navegación por teclado (clase que pone FocusMonitor)
   &.cdk-keyboard-focused {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--mat-sys-primary) 35%, transparent);
@@ -164,6 +200,10 @@ $button-colors: (
   display: inline-flex;
   align-items: center;
 
+  &:empty {
+    display: none;
+  }
+
   &--hidden {
     visibility: hidden;
   }
@@ -174,7 +214,12 @@ $button-colors: (
 }
 
 .app-button__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
   font-size: 1.1em;
   height: 1.1em;
   width: 1.1em;
+  line-height: 1;
+  margin: 0;
 }

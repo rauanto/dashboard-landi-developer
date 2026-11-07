@@ -10,6 +10,8 @@ import {
   AppButtonComponent,
   AppButtonToggleComponent,
   AppCardComponent,
+  AppHeaderFilterComponent,
+  AppPageHeaderComponent,
   AppCheckboxComponent,
   AppCheckboxGroupComponent,
   AppChipsComponent,
@@ -37,6 +39,7 @@ import {
   MenuItem,
   MenuPlacement,
   MenuSelectEvent,
+  PageHeaderSection,
   SelectOption,
   ToastPosition,
   ToastService,
@@ -64,6 +67,8 @@ const COLORS = ['primary', 'secondary', 'tertiary', 'success', 'warning', 'info'
     AppButtonComponent,
     AppButtonToggleComponent,
     AppCardComponent,
+    AppHeaderFilterComponent,
+    AppPageHeaderComponent,
     AppCheckboxComponent,
     AppCheckboxGroupComponent,
     AppChipsComponent,
@@ -104,6 +109,7 @@ export class UiDemoComponent {
   readonly sizes = ['xs', 'sm', 'md', 'lg'] as const;
   readonly sizes3 = ['sm', 'md', 'lg'] as const;
   readonly buttonVariants = ['filled', 'tonal', 'outlined', 'text', 'elevated'] as const;
+  readonly headerSections: PageHeaderSection[] = ['toolbar', 'tabs', 'extra'];
   readonly badgeVariants = ['filled', 'tonal', 'outlined'] as const;
   readonly badgeColors = [...COLORS, 'neutral'] as const;
   readonly cardVariants = ['elevated', 'filled', 'outlined'] as const;
@@ -295,6 +301,29 @@ export class UiDemoComponent {
   ];
 
   filtros = signal('Sin cambios');
+  // ---- Page header ----
+  vistaHeader = new FormControl('lista');
+  vistasHeader: SelectOption[] = [
+    { value: 'lista', label: 'Lista', icon: 'view_list' },
+    { value: 'grid', label: 'Cuadrícula', icon: 'grid_view' },
+  ];
+  hdrTipo = signal<string | null>(null);
+  hdrPersona = signal<string | null>(null);
+  hdrTab = signal('todos');
+  hdrHide = signal<PageHeaderSection[]>([]);
+  hdrTipos: MenuItem[] = ['Documentos', 'Hojas de cálculo', 'PDF', 'Imágenes'].map((label) => ({ label }));
+  hdrPersonas: MenuItem[] = ['Yo', 'Equipo de cobranza', 'Sistemas'].map((label) => ({ label }));
+  hdrCarpetas: MenuItem[] = [
+    { label: 'Nueva carpeta', icon: 'create_new_folder' },
+    { label: 'Renombrar', icon: 'edit' },
+    { label: 'Compartir', icon: 'share' },
+  ];
+  toggleHdr(section: PageHeaderSection): void {
+    this.hdrHide.update((hidden) =>
+      hidden.includes(section) ? hidden.filter((item) => item !== section) : [...hidden, section],
+    );
+  }
+
   menuFiltros: MenuItem[] = [
     { type: 'label', label: 'Mostrar' },
     { type: 'checkbox', label: 'Activos', checked: true, keepOpen: true },

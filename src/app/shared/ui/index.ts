@@ -33,3 +33,5 @@ export * from './components/confirm-dialog';
 export * from './components/toast';
 
 export * from './components/menu'
+
+export * from './components/page-header'

@@ -1,3 +1,4 @@
+
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -92,6 +93,15 @@ export class DashboardLayout {
     { path: '/dashboard/roles', icon: 'manage_accounts', label: 'Roles' },
     { path: '/dashboard/permissions', icon: 'security', label: 'Permisos' },
   ];
+
+
+  // public NavSectionDashboard: NavSection[]=[
+  //   {
+  //     title: 'Inicio',
+  //   }
+  // ]
+
+
 
   ngOnInit() {
     this.updateTitle();
